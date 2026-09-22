@@ -1,0 +1,1064 @@
+<!DOCTYPE html>
+<html lang="en" data-dir="laterite">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>XATTICA Look and Feel</title>
+<meta name="description" content="Three visual directions for the new XATTICA app, shown on the real Gaming Zone screen.">
+<meta name="theme-color" content="#120E0D">
+<link rel="preconnect" href="https://api.fontshare.com" crossorigin>
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=technor@400,500,600,700&f[]=switzer@400,500,600&display=swap">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%23120E0D'/%3E%3Crect x='7' y='11' width='8' height='10' rx='1' fill='%23F1B973'/%3E%3Crect x='17' y='11' width='8' height='10' rx='1' fill='%232A211F'/%3E%3C/svg%3E">
+<style>
+@font-face{
+  font-family:'Geist Mono';
+  src:url('https://cdn.jsdelivr.net/npm/geist@1.3.1/dist/fonts/geist-mono/GeistMono-Variable.woff2') format('woff2');
+  font-weight:100 900; font-display:swap;
+}
+
+/* ============================================================
+   DIRECTION A: LATERITE
+   Warm oxblood-black lit by one filament.
+   ============================================================ */
+:root[data-dir="laterite"]{
+  --bg:#120E0D; --s1:#1A1413; --s2:#221B19; --s3:#2A211F; --s4:#332926; --s5:#3C302D;
+  --ink:#F5EFEA; --ink2:#B9AFA7; --ink-mut:#A1968D; --ink-faint:#82766D;
+  --acc:#F1B973; --acc-hi:#FFEFD9; --acc-mid:#FBD5A8; --acc-low:#9C8364; --acc-deep:#3F3324;
+
+  --st-avail-mark:#F1B973; --st-avail-on:#120E0D; --st-avail-label:#FBD5A8; --st-avail-edge:#FFEFD9;
+  --st-occ-label:#B9AFA7; --st-occ-meter:#82766D; --st-occ-track:#2A211F;
+  --st-res-rule:#9C8364; --st-res-label:#FFEFD9; --st-res-tint:#3F3324;
+  --st-maint-surf:#1A1413; --st-maint-hatch:#2A211F; --st-maint-label:#98908A;
+
+  --r-badge:2px; --r-ctl:4px; --r-card:10px; --r-sheet:20px;
+  --u1:6px; --u2:11px; --u3:15px; --u4:22px; --u5:33px; --u6:44px; --u7:66px;
+  --font-display:'Technor','Switzer',system-ui,sans-serif;
+  --font-ui:'Switzer',system-ui,-apple-system,sans-serif;
+  --disp-weight:600; --disp-track:-0.02em; --disp-case:none;
+}
+
+/* ============================================================
+   DIRECTION B: PHOSPHOR
+   Green-black CRT. Decaying light, one sweep.
+   ============================================================ */
+:root[data-dir="phosphor"]{
+  --bg:#0C100D; --s1:#121713; --s2:#181E19; --s3:#1E261F; --s4:#252E26; --s5:#2C372E;
+  --ink:#EAF1E9; --ink2:#AAB2A8; --ink-mut:#909A8E; --ink-faint:#717A6F;
+  --acc:#7ECE76; --acc-hi:#D2F3CE; --acc-mid:#A7E4A0; --acc-low:#649D5E; --acc-deep:#466843;
+
+  --st-avail-mark:#7ECE76; --st-avail-on:#0C100D; --st-avail-label:#A7E4A0; --st-avail-edge:#D2F3CE;
+  --st-occ-label:#AAB2A8; --st-occ-meter:#717A6F; --st-occ-track:#1E261F;
+  --st-res-rule:#649D5E; --st-res-label:#D2F3CE; --st-res-tint:#1E261F;
+  --st-maint-surf:#121713; --st-maint-hatch:#1E261F; --st-maint-label:#8A928A;
+
+  --r-badge:0px; --r-ctl:0px; --r-card:0px; --r-sheet:16px;
+  --u1:8px; --u2:16px; --u3:24px; --u4:32px; --u5:40px; --u6:48px; --u7:64px;
+  --font-display:'Technor','Switzer',system-ui,sans-serif;
+  --font-ui:'Switzer',system-ui,-apple-system,sans-serif;
+  --disp-weight:500; --disp-track:0.06em; --disp-case:uppercase;
+}
+
+/* ============================================================
+   DIRECTION C: PIT LANE
+   Race garage. Warm graphite, safety tape, machine numerals.
+   ============================================================ */
+:root[data-dir="pitlane"]{
+  --bg:#100F0D; --s1:#171514; --s2:#1E1C1A; --s3:#262320; --s4:#2E2B28; --s5:#37322F;
+  --ink:#F0EEEC; --ink2:#B1ADAA; --ink-mut:#989491; --ink-faint:#797571;
+  --acc:#F27636; --acc-hi:#FFCFB5; --acc-mid:#FFAB82; --acc-low:#C05D25; --acc-deep:#65331B;
+
+  --st-avail-mark:#F27636; --st-avail-on:#100F0D; --st-avail-label:#FFAB82; --st-avail-edge:#FFCFB5;
+  --st-occ-label:#B1ADAA; --st-occ-meter:#797571; --st-occ-track:#262320;
+  --st-res-rule:#C05D25; --st-res-label:#FFCFB5; --st-res-tint:#262320;
+  --st-maint-surf:#171514; --st-maint-hatch:#262320; --st-maint-label:#8E8A87;
+
+  --r-badge:2px; --r-ctl:3px; --r-card:10px; --r-sheet:20px;
+  --u1:4px; --u2:8px; --u3:12px; --u4:20px; --u5:32px; --u6:48px; --u7:64px;
+  --font-display:'Technor','Switzer',system-ui,sans-serif;
+  --font-ui:'Switzer',system-ui,-apple-system,sans-serif;
+  --disp-weight:700; --disp-track:-0.01em; --disp-case:none;
+}
+
+:root{
+  --mono:'Geist Mono',ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  --grain:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' seed='21' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+}
+
+*{box-sizing:border-box;}
+html{-webkit-text-size-adjust:100%;}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:var(--font-ui);
+  font-size:16px;
+  line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+  transition:background-color .35s ease, color .35s ease;
+  overflow-x:hidden;
+}
+
+/* Page atmosphere: one warm light from the top left, grain dithered in.
+   Same light vector for every element on the page. */
+body::before{
+  content:"";
+  position:fixed; inset:0; z-index:0; pointer-events:none;
+  background-image:
+    var(--grain),
+    radial-gradient(120% 90% at 14% -14%,
+      color-mix(in oklab, var(--s5), var(--acc) 7%) 0%,
+      var(--s3) 34%,
+      var(--s1) 66%,
+      var(--bg) 100%);
+  background-size:180px 180px, 100% 100%;
+  background-blend-mode:soft-light, normal;
+  background-repeat:repeat, no-repeat;
+  opacity:1;
+  transition:opacity .35s ease;
+}
+.wrap{position:relative; z-index:1;}
+
+/* ---------- type ---------- */
+.display{
+  font-family:var(--font-display);
+  font-weight:var(--disp-weight);
+  letter-spacing:var(--disp-track);
+  text-transform:var(--disp-case);
+  line-height:1.02;
+  margin:0;
+}
+.mono{font-family:var(--mono); font-variant-numeric:tabular-nums;}
+/* Labels deliberately do NOT share one costume. The index number is mono because
+   it is a number; the written labels are plain sentence-case text. */
+.idx{
+  font-family:var(--mono); font-size:12px;
+  color:var(--acc-low); font-variant-numeric:tabular-nums;
+}
+.lbl{
+  font-size:12.5px; color:var(--ink-faint);
+  display:block; margin-bottom:var(--u1);
+}
+
+/* ---------- shell ---------- */
+.wrap{
+  max-width:1180px;
+  margin:0 auto;
+  padding:var(--u5) 20px 0;
+}
+
+/* ---------- masthead ---------- */
+.masthead{
+  display:flex; flex-wrap:wrap; align-items:flex-end;
+  gap:var(--u3) var(--u5);
+  padding-bottom:var(--u4);
+  margin-bottom:var(--u3);
+}
+.masthead h1{
+  font-size:clamp(32px,6.4vw,54px);
+  max-width:17ch;          /* holds it to two lines in sentence case AND in caps */
+  text-wrap:balance;
+}
+.masthead .note{
+  flex:1 1 280px;
+  min-width:240px;
+  color:var(--ink2);
+  font-size:15px;
+  max-width:46ch;
+}
+.masthead .note strong{color:var(--ink); font-weight:600;}
+
+/* ---------- direction switcher: a spec-sheet index, not a pill nav ---------- */
+.switch{
+  position:sticky; top:0; z-index:20;
+  margin:0 -20px var(--u5);
+  padding:var(--u2) 20px;
+  background:var(--s1);
+  box-shadow:inset 0 -1px 0 color-mix(in oklab, var(--s1), var(--ink) 9%);
+}
+.switch-inner{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:var(--u1);
+  max-width:1140px; margin:0 auto;
+}
+.opt{
+  appearance:none;
+  font:inherit;
+  text-align:left;
+  cursor:pointer;
+  background:transparent;
+  color:var(--ink-mut);
+  border:0;
+  border-top:2px solid color-mix(in oklab, var(--bg), var(--ink) 14%);
+  padding:var(--u2) var(--u1) calc(var(--u1) + 2px);
+  transition:color .2s cubic-bezier(.4,0,.2,1), border-color .2s cubic-bezier(.4,0,.2,1);
+}
+.opt .num{
+  font-family:var(--mono); font-size:11px; letter-spacing:.08em;
+  display:block; margin-bottom:3px; color:var(--ink-faint);
+  transition:color .2s ease;
+}
+.opt .nm{
+  font-family:var(--font-display);
+  font-weight:var(--disp-weight);
+  letter-spacing:var(--disp-track);
+  font-size:clamp(15px,3.4vw,21px);
+  display:block;
+  line-height:1.1;
+}
+.opt[aria-selected="true"]{color:var(--ink); border-top-color:var(--acc);}
+.opt[aria-selected="true"] .num{color:var(--acc);}
+.opt:focus-visible{outline:2px solid var(--acc); outline-offset:3px;}
+
+/* ---------- main grid ---------- */
+.stage{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) minmax(0,420px);
+  gap:var(--u6) var(--u6);
+  align-items:start;
+}
+@media (max-width:900px){
+  .stage{grid-template-columns:1fr; gap:var(--u5);}
+}
+
+/* ---------- concept card ---------- */
+.concept{
+  background:var(--s2);
+  border-radius:var(--r-card);
+  padding:var(--u4);
+  box-shadow:
+    inset 0 0 0 1px color-mix(in oklab, var(--s2), var(--ink) 9%),
+    inset 0 1px 0 color-mix(in oklab, var(--s2), var(--ink) 15%),
+    inset 0 -1px 0 color-mix(in oklab, var(--s2), #000 55%);
+}
+.concept h2{
+  font-family:var(--font-display);
+  font-weight:var(--disp-weight);
+  letter-spacing:var(--disp-track);
+  text-transform:var(--disp-case);
+  font-size:clamp(26px,5vw,38px);
+  margin:0 0 var(--u1);
+  line-height:1.05;
+}
+.concept .lede{color:var(--acc-mid); font-size:15px; margin:0 0 var(--u3);}
+.concept p{color:var(--ink2); font-size:14.5px; margin:0 0 var(--u3);}
+.concept p:last-of-type{margin-bottom:0;}
+
+.sig{
+  margin-top:var(--u3);
+  padding:var(--u3);
+  background:var(--s3);
+  border-radius:var(--r-ctl);
+  box-shadow:inset 0 1px 0 color-mix(in oklab, var(--s3), var(--ink) 14%);
+}
+.sig p{color:var(--ink); font-size:14.5px; margin:0;}
+.sig p b{color:var(--acc-mid); font-weight:600;}
+
+/* ---------- palette ---------- */
+.pal{margin-top:var(--u4);}
+.ramp{display:flex; border-radius:var(--r-ctl); overflow:hidden; height:46px;}
+.ramp span{flex:1;}
+.pal-list{
+  margin:var(--u2) 0 0;
+  padding:0; list-style:none;
+  display:grid; grid-template-columns:repeat(auto-fill,minmax(112px,1fr));
+  gap:var(--u1) var(--u2);
+}
+.pal-list li{
+  font-family:var(--mono); font-size:11px;
+  color:var(--ink-faint);
+  display:flex; align-items:center; gap:7px;
+}
+.pal-list i{
+  width:11px; height:11px; border-radius:2px; flex:none;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.12);
+}
+
+/* ============================================================
+   THE PHONE
+   ============================================================ */
+.device-col{display:flex; flex-direction:column; gap:var(--u4); align-items:center;}
+.device{
+  width:100%; max-width:392px;
+  background:var(--bg);
+  border-radius:30px;
+  padding:9px;
+  box-shadow:
+    inset 0 0 0 1px color-mix(in oklab, var(--bg), var(--ink) 16%),
+    inset 0 1px 0 color-mix(in oklab, var(--bg), var(--ink) 24%),
+    0 1px 2px rgba(0,0,0,.5);
+}
+.screen{
+  background:var(--bg);
+  border-radius:22px;
+  overflow:hidden;
+  position:relative;
+  min-height:640px;
+  display:flex; flex-direction:column;
+}
+/* Grain sits on the substrate, BEHIND every piece of content, never over it. */
+.screen::before{
+  content:""; position:absolute; inset:0; z-index:0; pointer-events:none;
+  background-image:var(--grain); background-size:180px 180px;
+  opacity:.055; mix-blend-mode:soft-light;
+}
+.screen > *{position:relative; z-index:1;}
+
+/* status bar */
+.sbar{
+  display:flex; justify-content:space-between; align-items:center;
+  padding:11px 18px 5px;
+  font-family:var(--mono); font-size:11px; color:var(--ink-faint);
+  letter-spacing:.02em;
+}
+.sbar .dots{display:flex; gap:3px; align-items:center;}
+.sbar .dots i{width:3px; height:3px; border-radius:50%; background:var(--ink-faint); display:block;}
+
+/* app head */
+.ahead{padding:var(--u2) 18px var(--u1);}
+.brandline{display:flex; align-items:baseline; justify-content:space-between; gap:12px;}
+.brandline .mark{
+  font-family:var(--font-display);
+  font-weight:700; letter-spacing:.16em;
+  font-size:15px; color:var(--ink);
+}
+.fresh{
+  font-family:var(--mono); font-size:10px; color:var(--ink-faint);
+  display:flex; align-items:center; gap:5px; letter-spacing:.04em;
+}
+.fresh i{
+  width:5px; height:5px; border-radius:50%; background:var(--acc); flex:none;
+  animation:beat 3.2s ease-in-out infinite;
+}
+@keyframes beat{0%,100%{opacity:1}50%{opacity:.35}}
+
+/* branch switcher: three visible, live counts */
+.branches{
+  display:grid; grid-template-columns:repeat(3,1fr);
+  gap:5px; padding:var(--u2) 18px var(--u1);
+}
+.branch{
+  appearance:none; font:inherit; cursor:pointer; text-align:left;
+  background:var(--s1); color:var(--ink-mut);
+  border:0; border-radius:var(--r-ctl);
+  padding:8px 9px 7px;
+  box-shadow:inset 0 0 0 1px color-mix(in oklab, var(--s1), var(--ink) 8%);
+  transition:background-color .2s cubic-bezier(.4,0,.2,1), color .2s cubic-bezier(.4,0,.2,1);
+}
+.branch .bn{display:block; font-size:11.5px; font-weight:600; letter-spacing:.02em; line-height:1.2;}
+.branch .bc{
+  display:block; font-family:var(--mono); font-size:10px; margin-top:2px;
+  color:var(--ink-faint); letter-spacing:.03em;
+}
+.branch[aria-selected="true"]{
+  background:var(--s3); color:var(--ink);
+  box-shadow:
+    inset 0 0 0 1px color-mix(in oklab, var(--s3), var(--ink) 13%),
+    inset 0 1px 0 color-mix(in oklab, var(--s3), var(--ink) 18%);
+}
+.branch[aria-selected="true"] .bc{color:var(--acc-mid);}
+.branch:focus-visible{outline:2px solid var(--acc); outline-offset:2px;}
+
+/* summary strip */
+.summary{
+  margin:var(--u2) 18px var(--u2);
+  padding:var(--u2) var(--u3);
+  background:var(--s1);
+  border-radius:var(--r-card);
+  display:flex; align-items:center; justify-content:space-between; gap:12px;
+  box-shadow:inset 0 0 0 1px color-mix(in oklab, var(--s1), var(--ink) 8%);
+}
+.summary .big{
+  font-family:var(--mono); font-size:26px; line-height:1;
+  color:var(--ink); letter-spacing:-.02em;
+}
+.summary .big b{color:var(--acc); font-weight:inherit;}
+.summary .cap{font-size:11px; color:var(--ink-mut); margin-top:4px; letter-spacing:.01em;}
+.summary .right{text-align:right;}
+.summary .right .k{font-family:var(--mono); font-size:10px; color:var(--ink-faint); letter-spacing:.07em; text-transform:uppercase;}
+.summary .right .v{font-family:var(--mono); font-size:14px; color:var(--ink2); margin-top:3px;}
+
+/* ---------- station area ---------- */
+.floor{
+  flex:1;
+  margin:0 18px var(--u2);
+  position:relative;
+}
+
+/* LATERITE: the floor plate. A drawn room, stations in real positions. */
+:root[data-dir="laterite"] .floor{
+  padding:26px 13px 13px;
+  border-radius:var(--r-card);
+  box-shadow:inset 0 0 0 1px color-mix(in oklab, var(--bg), var(--ink) 13%);
+}
+:root[data-dir="laterite"] .plate-label{
+  position:absolute; top:8px; left:13px;
+  font-family:var(--mono); font-size:9.5px; letter-spacing:.11em;
+  text-transform:uppercase; color:var(--ink-faint);
+}
+:root[data-dir="laterite"] .plate-counter{
+  position:absolute; top:7px; right:13px;
+  font-family:var(--mono); font-size:9.5px; letter-spacing:.11em;
+  text-transform:uppercase; color:var(--ink-faint);
+  display:flex; align-items:center; gap:6px;
+}
+:root[data-dir="laterite"] .plate-counter::after{
+  content:""; width:22px; height:1px; background:var(--ink-faint); opacity:.5;
+}
+.plate-label, .plate-counter{display:none;}
+:root[data-dir="laterite"] .plate-label,
+:root[data-dir="laterite"] .plate-counter{display:flex;}
+
+/* PIT LANE: occupancy rail pinned at the left edge of the screen */
+.rail{display:none;}
+:root[data-dir="pitlane"] .rail{
+  display:block;
+  position:absolute; left:0; top:0; bottom:0; width:13px;
+  background:var(--s1);
+  overflow:hidden;
+  z-index:3;
+}
+:root[data-dir="pitlane"] .rail i{
+  position:absolute; left:0; right:0; bottom:0;
+  height:var(--occ,57%);
+  background:repeating-linear-gradient(45deg,
+    var(--acc-deep) 0 4px, transparent 4px 9px), var(--s3);
+  border-top:2px solid var(--acc);
+  transition:height .4s cubic-bezier(.4,0,.2,1);
+}
+:root[data-dir="pitlane"] .rail b{
+  position:absolute; left:0; right:0; top:8px;
+  font-family:var(--mono); font-size:8px; font-weight:400;
+  color:var(--ink-faint); text-align:center;
+  writing-mode:vertical-rl; letter-spacing:.14em;
+  margin:0 auto; width:13px;
+}
+:root[data-dir="pitlane"] .screen{padding-left:13px;}
+:root[data-dir="pitlane"] .sbar{padding-left:8px;}
+
+/* PHOSPHOR: the sweep. Adds light, never removes it. */
+.sweep{display:none;}
+:root[data-dir="phosphor"] .sweep{
+  display:block;
+  position:absolute; left:0; right:0; top:0; height:64px;
+  pointer-events:none; z-index:2;
+  background:linear-gradient(to bottom,
+    transparent 0%,
+    color-mix(in oklab, transparent, var(--acc) 9%) 58%,
+    color-mix(in oklab, transparent, var(--acc-hi) 15%) 92%,
+    color-mix(in oklab, transparent, var(--acc-hi) 30%) 100%);
+  animation:sweep 6s linear infinite;
+}
+@keyframes sweep{
+  0%{transform:translateY(-70px); opacity:0;}
+  8%{opacity:1;}
+  88%{opacity:1;}
+  100%{transform:translateY(560px); opacity:0;}
+}
+
+/* ---------- station tiles ---------- */
+.grid{
+  display:grid; grid-template-columns:repeat(2,1fr);
+  gap:var(--u1);
+  list-style:none; margin:0; padding:0;
+}
+.st{
+  position:relative;
+  border-radius:var(--r-ctl);
+  padding:11px 11px 10px;
+  min-height:92px;
+  display:flex; flex-direction:column; justify-content:space-between;
+  background:var(--s2);
+  color:var(--st-occ-label);
+  box-shadow:inset 0 0 0 1px var(--st-occ-track);
+}
+.st .code{
+  font-family:var(--mono); font-size:14px; line-height:1;
+  letter-spacing:.02em;
+}
+.st .spec{
+  font-size:9.5px; line-height:1.25; margin-top:4px;
+  color:var(--ink-faint);
+  overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+}
+.st .foot{margin-top:9px; display:flex; align-items:flex-end; justify-content:space-between; gap:6px;}
+.st .state{
+  font-family:var(--mono); font-size:11px; letter-spacing:.03em; line-height:1.1;
+}
+.st .rate{font-family:var(--mono); font-size:10px; color:var(--ink-faint); white-space:nowrap;}
+
+/* AVAILABLE: the only thing on screen brighter than its card */
+.st[data-s="free"]{
+  background:var(--st-avail-mark);
+  color:var(--st-avail-on);
+  box-shadow:inset 0 1px 0 var(--st-avail-edge);
+}
+.st[data-s="free"] .spec,
+.st[data-s="free"] .rate{color:color-mix(in oklab, var(--st-avail-on), var(--st-avail-mark) 30%);}
+.st[data-s="free"] .state{font-weight:500;}
+
+/* OCCUPIED: zero chroma. The number carries the information. */
+.st[data-s="busy"] .state{color:var(--st-occ-label);}
+.st[data-s="busy"] .meter{
+  position:absolute; left:11px; right:11px; bottom:0; height:2px;
+  background:var(--st-occ-track); border-radius:1px; overflow:hidden;
+}
+.st[data-s="busy"] .meter i{
+  display:block; height:100%; width:var(--e,50%);
+  background:var(--st-occ-meter);
+}
+
+/* RESERVED: outline only, interior stays close to the ground */
+.st[data-s="held"]{
+  background:var(--st-res-tint);
+  color:var(--st-res-label);
+  box-shadow:none;
+  outline:1px dashed var(--st-res-rule);
+  outline-offset:-1px;
+}
+.st[data-s="held"] .spec,
+.st[data-s="held"] .rate{color:var(--ink-faint);}
+
+/* MAINTENANCE: below the card plane, hatched, no chroma */
+.st[data-s="down"]{
+  background:
+    repeating-linear-gradient(45deg,
+      var(--st-maint-hatch) 0 3px, transparent 3px 10px),
+    var(--st-maint-surf);
+  color:var(--st-maint-label);
+  box-shadow:none;
+}
+.st[data-s="down"] .spec,
+.st[data-s="down"] .rate{color:var(--ink-faint);}
+
+/* the wide one (simulator / PS5) spans the row */
+.st.wide{grid-column:1 / -1; min-height:78px;}
+
+/* ---------- bottom nav ---------- */
+.bnav{
+  display:grid; grid-template-columns:repeat(4,1fr);
+  padding:9px 12px calc(11px + env(safe-area-inset-bottom,0px));
+  border-top:1px solid color-mix(in oklab, var(--bg), var(--ink) 9%);
+  background:var(--s1);
+}
+.bnav span{
+  text-align:center; font-size:9.5px; letter-spacing:.02em;
+  color:var(--ink-faint); line-height:1.3;
+}
+.bnav span:first-child{color:var(--acc-mid);}
+.bnav span b{
+  display:block; width:16px; height:2px; margin:0 auto 6px;
+  background:currentColor; opacity:.45; border-radius:1px;
+}
+.bnav span:first-child b{opacity:1;}
+
+/* ---------- detail sheet (second device) ---------- */
+.sheet-screen{min-height:auto; padding-bottom:var(--u3);}
+.sheet{
+  background:var(--s3);
+  border-radius:var(--r-sheet) var(--r-sheet) 0 0;
+  padding:var(--u3) 18px var(--u4);
+  box-shadow:
+    inset 0 1px 0 color-mix(in oklab, var(--s3), var(--ink) 15%);
+}
+.sheet .grab{
+  width:34px; height:3px; border-radius:2px; margin:0 auto var(--u3);
+  background:var(--ink-faint); opacity:.5;
+}
+.sheet h3{
+  font-family:var(--font-display); font-weight:var(--disp-weight);
+  letter-spacing:var(--disp-track);
+  font-size:26px; margin:0; line-height:1.05;
+}
+.sheet .sub{color:var(--ink-mut); font-size:12.5px; margin:5px 0 var(--u3);}
+.rows{list-style:none; margin:0 0 var(--u3); padding:0;}
+.rows li{
+  display:flex; justify-content:space-between; align-items:baseline; gap:14px;
+  padding:9px 0;
+  border-bottom:1px solid color-mix(in oklab, var(--s3), var(--ink) 9%);
+  font-size:13px;
+}
+.rows li:last-child{border-bottom:0;}
+.rows .k{color:var(--ink-mut);}
+.rows .v{font-family:var(--mono); color:var(--ink); font-size:13px; text-align:right;}
+.rows .v.hi{color:var(--acc-mid);}
+.grace{
+  font-size:12px; color:var(--ink2);
+  background:var(--s1);
+  border-radius:var(--r-ctl);
+  padding:10px 12px;
+  margin-bottom:var(--u3);
+  box-shadow:inset 0 0 0 1px color-mix(in oklab, var(--s1), var(--ink) 8%);
+}
+.grace b{color:var(--ink); font-weight:600;}
+.cta{
+  display:block; width:100%;
+  font:inherit; font-size:14px; font-weight:600;
+  text-align:center; cursor:pointer; text-decoration:none;
+  padding:13px 16px;
+  border:0; border-radius:var(--r-ctl);
+  background:var(--s5);
+  color:var(--ink);
+  box-shadow:
+    inset 0 0 0 1px color-mix(in oklab, var(--s5), var(--ink) 14%),
+    inset 0 1px 0 color-mix(in oklab, var(--s5), var(--ink) 20%),
+    inset 0 -1px 0 color-mix(in oklab, var(--s5), #000 50%);
+  transition:background-color .18s cubic-bezier(.4,0,.2,1);
+}
+.cta:hover{background:color-mix(in oklab, var(--s5), var(--ink) 7%);}
+.cta:focus-visible{outline:2px solid var(--acc); outline-offset:3px;}
+
+/* ---------- legend ---------- */
+.legend{margin-top:var(--u7);}
+.legend h2{
+  font-family:var(--font-display); font-weight:var(--disp-weight);
+  letter-spacing:var(--disp-track); text-transform:var(--disp-case);
+  font-size:clamp(24px,4.4vw,32px); margin:0 0 var(--u2); line-height:1.08;
+}
+.legend .intro{color:var(--ink2); max-width:62ch; margin:0 0 var(--u4); font-size:15px;}
+.legend-grid{
+  display:grid; grid-template-columns:repeat(auto-fit,minmax(215px,1fr));
+  gap:var(--u3);
+  list-style:none; margin:0; padding:0;
+}
+.lg{
+  display:flex; flex-direction:column; gap:var(--u2);
+  background:var(--s1);
+  border-radius:var(--r-card);
+  padding:var(--u3);
+  box-shadow:inset 0 0 0 1px color-mix(in oklab, var(--s1), var(--ink) 8%);
+}
+.lg .demo{width:100%;}
+.lg .st{min-height:82px;}
+.lg h4{margin:0; font-size:14px; font-weight:600; color:var(--ink);}
+.lg p{margin:4px 0 0; font-size:12.5px; color:var(--ink-mut); line-height:1.5;}
+
+/* ---------- close ---------- */
+.close{
+  margin-top:var(--u7);
+  padding:var(--u5) var(--u4);
+  background:var(--s1);
+  border-radius:var(--r-card);
+  box-shadow:inset 0 0 0 1px color-mix(in oklab, var(--s1), var(--ink) 8%);
+  display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+  gap:var(--u5);
+}
+@media (max-width:760px){ .close{grid-template-columns:1fr; gap:var(--u4);} }
+.close h2{
+  font-family:var(--font-display); font-weight:var(--disp-weight);
+  letter-spacing:var(--disp-track); text-transform:var(--disp-case);
+  font-size:clamp(22px,4vw,30px); margin:0 0 var(--u2); line-height:1.1;
+}
+.close p{color:var(--ink2); font-size:15px; margin:0 0 var(--u2); max-width:50ch;}
+.close ol{color:var(--ink2); font-size:14.5px; margin:0; padding-left:1.15em;}
+.close ol li{margin-bottom:8px;}
+.close ol b{color:var(--ink);}
+.colophon{
+  margin-top:var(--u5);
+  color:var(--ink-faint);
+  font-size:13px;
+}
+
+/* ---------- big wordmark, anchored to the bottom edge ---------- */
+/* Anchored flush to the bottom edge, nothing beneath it, no glyph clipped. */
+.signoff{
+  margin-top:var(--u6);
+  padding-top:var(--u4);
+}
+.signoff span{
+  display:block;
+  font-family:var(--font-display);
+  font-weight:700;
+  font-size:clamp(40px,14vw,184px);
+  line-height:1;
+  letter-spacing:.07em;
+  text-indent:.07em;            /* pays back the trailing letter-space so it centres optically */
+  color:color-mix(in oklab, var(--bg), var(--ink) 13%);
+  text-align:center;
+  white-space:nowrap;
+}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none !important; transition:none !important;}
+}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <header class="masthead">
+    <h1 class="display">Pick how the new app looks.</h1>
+    <p class="note">Same screen, same stations, same prices. Only the look changes.
+      Tap a name below to switch, then tell us which one feels like <strong>XATTICA</strong>.
+      There is no wrong answer here, we build whichever you pick.</p>
+  </header>
+
+  <nav class="switch" aria-label="Choose a look">
+    <div class="switch-inner" role="tablist">
+      <button class="opt" role="tab" aria-selected="true"  data-set="laterite">
+        <span class="num">01</span><span class="nm">Laterite</span>
+      </button>
+      <button class="opt" role="tab" aria-selected="false" data-set="phosphor">
+        <span class="num">02</span><span class="nm">Phosphor</span>
+      </button>
+      <button class="opt" role="tab" aria-selected="false" data-set="pitlane">
+        <span class="num">03</span><span class="nm">Pit Lane</span>
+      </button>
+    </div>
+  </nav>
+
+  <section class="stage">
+
+    <!-- ===== devices ===== -->
+    <div class="device-col">
+
+      <div class="device">
+        <div class="screen">
+          <div class="rail" aria-hidden="true"><i></i><b>OCCUPANCY</b></div>
+          <div class="sweep" aria-hidden="true"></div>
+
+          <div class="sbar">
+            <span class="mono">8:37</span>
+            <span class="dots"><i></i><i></i><i></i></span>
+          </div>
+
+          <div class="ahead">
+            <div class="brandline">
+              <span class="mark">XATTICA</span>
+              <span class="fresh"><i></i>updated 4s ago</span>
+            </div>
+          </div>
+
+          <div class="branches" role="tablist" aria-label="Branch">
+            <button class="branch" role="tab" aria-selected="true"  data-branch="kollam">
+              <span class="bn">Kollam</span><span class="bc" data-count>3 of 7 free</span>
+            </button>
+            <button class="branch" role="tab" aria-selected="false" data-branch="kottayam">
+              <span class="bn">Kottayam</span><span class="bc" data-count>3 of 6 free</span>
+            </button>
+            <button class="branch" role="tab" aria-selected="false" data-branch="cochin">
+              <span class="bn">Cochin</span><span class="bc" data-count>3 of 9 free</span>
+            </button>
+          </div>
+
+          <div class="summary">
+            <div>
+              <div class="big"><b id="sFree">3</b> of <span id="sTotal">7</span> free</div>
+              <div class="cap" id="sOpen">Open now, until 10:00 PM</div>
+            </div>
+            <div class="right">
+              <div class="k">Next free</div>
+              <div class="v" id="sNext">9:15 PM</div>
+            </div>
+          </div>
+
+          <div class="floor">
+            <span class="plate-label">Kollam floor</span>
+            <span class="plate-counter">Counter</span>
+            <ul class="grid" id="grid"></ul>
+          </div>
+
+          <div class="bnav">
+            <span><b></b>Gaming Zone</span>
+            <span><b></b>PC Store</span>
+            <span><b></b>Stories</span>
+            <span><b></b>Tech News</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="device">
+        <div class="screen sheet-screen">
+          <div class="sbar">
+            <span class="mono">8:37</span>
+            <span class="dots"><i></i><i></i><i></i></span>
+          </div>
+          <div class="ahead">
+            <div class="brandline">
+              <span class="mark">XATTICA</span>
+              <span class="fresh"><i></i>updated 4s ago</span>
+            </div>
+          </div>
+          <div style="flex:1"></div>
+          <div class="sheet">
+            <div class="grab"></div>
+            <h3>PC 2</h3>
+            <p class="sub">Battle Rig 2 &middot; Kollam</p>
+            <ul class="rows">
+              <li><span class="k">Right now</span><span class="v">38 MIN LEFT</span></li>
+              <li><span class="k">Free at</span><span class="v hi">9:15 PM</span></li>
+              <li><span class="k">Graphics</span><span class="v">RTX 5060</span></li>
+              <li><span class="k">Rate now</span><span class="v">&#8377;90 / hr</span></li>
+              <li><span class="k">Rate after 6 PM</span><span class="v">&#8377;100 / hr</span></li>
+            </ul>
+            <p class="grace">Your first hour includes <b>10 free minutes</b>. The next 30 minute block starts at minute 71.</p>
+            <a class="cta" href="https://wa.me/919961123434?text=Hi%20XATTICA%20Kollam%2C%20is%20PC%202%20free%3F"
+               target="_blank" rel="noopener">WhatsApp Kollam &middot; +91 99611 23434</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ===== concept + palette ===== -->
+    <div>
+      <div class="concept">
+        <span class="idx" id="cTag">01</span>
+        <h2 id="cName">Laterite</h2>
+        <p class="lede" id="cLede">Warm oxblood black, lit by one filament.</p>
+        <p id="cBody"></p>
+        <div class="sig">
+          <p><b>What makes it XATTICA and nobody else.</b> <span id="cSig"></span></p>
+        </div>
+      </div>
+
+      <div class="pal">
+        <span class="lbl">Every colour used, exactly as it would ship.</span>
+        <div class="ramp" id="ramp" aria-hidden="true"></div>
+        <ul class="pal-list" id="palList"></ul>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ===== legend ===== -->
+  <section class="legend">
+    <h2 class="display">Only free stations light up.</h2>
+    <p class="intro">At 8 PM on a Saturday most of your stations are busy. If busy had a colour,
+      the whole screen would be that colour exactly when the shop is fullest. So busy has no colour at all,
+      it carries the minutes instead. The screen gets calmer as the place fills up, and the only bright
+      thing left is what a customer is actually looking for.</p>
+    <ul class="legend-grid">
+      <li class="lg">
+        <div class="demo">
+          <div class="st" data-s="free">
+            <div><span class="code">PC 3</span><div class="spec">RX 7900XT</div></div>
+            <div class="foot"><span class="state">FREE</span><span class="rate">&#8377;90/hr</span></div>
+          </div>
+        </div>
+        <div><h4>Free</h4><p>Filled in, brighter than everything around it. Readable across the room and in sunlight.</p></div>
+      </li>
+      <li class="lg">
+        <div class="demo">
+          <div class="st" data-s="busy" style="--e:62%">
+            <div><span class="code">PC 2</span><div class="spec">RTX 5060</div></div>
+            <div class="foot"><span class="state">38 MIN LEFT</span><span class="rate">&#8377;90/hr</span></div>
+            <div class="meter"><i></i></div>
+          </div>
+        </div>
+        <div><h4>Busy</h4><p>No colour. The minutes and the bar underneath say more than a red dot ever could.</p></div>
+      </li>
+      <li class="lg">
+        <div class="demo">
+          <div class="st" data-s="held">
+            <div><span class="code">PC 5</span><div class="spec">ROG 4070</div></div>
+            <div class="foot"><span class="state">HELD 9:30 PM</span><span class="rate">&#8377;90/hr</span></div>
+          </div>
+        </div>
+        <div><h4>Booked</h4><p>Outlined, not filled. Clearly spoken for, clearly not in use yet.</p></div>
+      </li>
+      <li class="lg">
+        <div class="demo">
+          <div class="st" data-s="down">
+            <div><span class="code">PC 6</span><div class="spec">ROG 4070</div></div>
+            <div class="foot"><span class="state">SERVICE</span><span class="rate">&#8377;90/hr</span></div>
+          </div>
+        </div>
+        <div><h4>Under service</h4><p>Sits below the floor, hatched over. Impossible to mistake for a free machine.</p></div>
+      </li>
+    </ul>
+  </section>
+
+  <!-- ===== close ===== -->
+  <section class="close">
+    <div>
+      <h2 class="display">What we need from you</h2>
+      <p>Just a name. Laterite, Phosphor or Pit Lane. Reply with one word and we start building that one.</p>
+      <p>If none of them feel right, say what is wrong with the closest one and we will do another round.
+        Changing it now costs an afternoon. Changing it later costs a rebuild.</p>
+    </div>
+    <div>
+      <h2 class="display">What is not being decided here</h2>
+      <ol>
+        <li><b>The screens and features stay.</b> Live floor, PC Store, Stories, Tech News, the admin side. Nothing is being taken away.</li>
+        <li><b>The prices are real.</b> Everything shown is your actual rate card, pulled from the current app.</li>
+        <li><b>The layout can still move.</b> This is about colour, type and feel. Where things sit is a separate conversation.</li>
+      </ol>
+    </div>
+  </section>
+
+  <p class="colophon">XATTICA Gaming Zone &middot; Kollam, Kottayam, Cochin &middot; look and feel, September 2026</p>
+
+  <div class="signoff" aria-hidden="true"><span>XATTICA</span></div>
+
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  var DIRECTIONS = {
+    laterite:{
+      idx:"01", name:"Laterite",
+      lede:"Warm oxblood black, lit by one filament.",
+      body:"The colour of Kerala laterite stone, the same red brown every older building here is built from, and the same lacquer they used on old arcade cabinets. One warm light sits at the top left and everything on the screen is lit from it. No neon, no glow.",
+      sig:"The floor plate. Instead of a list, the home screen is a plan of the actual room, with every machine where it really stands. You can see at a glance that the back row is free.",
+      ramp:["#120E0D","#1A1413","#221B19","#2A211F","#332926","#3C302D","#9C8364","#F1B973","#FBD5A8","#FFEFD9"],
+      pal:[["#120E0D","Background"],["#221B19","Card"],["#332926","Raised"],["#F1B973","Free"],["#B9AFA7","Busy text"],["#F5EFEA","Text"]]
+    },
+    phosphor:{
+      idx:"02", name:"Phosphor",
+      lede:"Green black CRT. Light that fades, one sweep.",
+      body:"Not neon green on black. The ground itself is green, and the brightness behaves like an old monitor: it lights up, then fades. Closer to a workshop oscilloscope than to a gaming keyboard. Square corners everywhere, which is what keeps it from looking like every other gaming brand.",
+      sig:"The sweep. A line of light travels down the screen every few seconds and each station brightens as it passes. You can see the screen is live, because you watched it refresh.",
+      ramp:["#0C100D","#121713","#181E19","#1E261F","#252E26","#2C372E","#649D5E","#7ECE76","#A7E4A0","#D2F3CE"],
+      pal:[["#0C100D","Background"],["#181E19","Card"],["#252E26","Raised"],["#7ECE76","Free"],["#AAB2A8","Busy text"],["#EAF1E9","Text"]]
+    },
+    pitlane:{
+      idx:"03", name:"Pit Lane",
+      lede:"Race garage. Warm graphite, safety tape, machine numbers.",
+      body:"The most restrained of the three and the easiest to live with. Near neutral warm grey, with orange kept for exactly one job: telling you what is free right now. Nothing else on the screen is allowed to use it, so nothing else competes.",
+      sig:"The rail. A hatched strip down the left edge of every screen, filled to however full the branch is right now. Sixty percent full, sixty percent filled. It is the first thing your eye lands on.",
+      ramp:["#100F0D","#171514","#1E1C1A","#262320","#2E2B28","#37322F","#C05D25","#F27636","#FFAB82","#FFCFB5"],
+      pal:[["#100F0D","Background"],["#1E1C1A","Card"],["#2E2B28","Raised"],["#F27636","Free"],["#B1ADAA","Busy text"],["#F0EEEC","Text"]]
+    }
+  };
+
+  var BRANCHES = {
+    kollam:{
+      label:"Kollam floor", open:"Open now, until 10:00 PM", next:"9:15 PM",
+      stations:[
+        {code:"PC 1", spec:"RTX 5060",            rate:90,  s:"free"},
+        {code:"PC 2", spec:"RTX 5060",            rate:90,  s:"busy", t:"38 MIN LEFT",  e:62},
+        {code:"PC 3", spec:"RX 7900XT",           rate:90,  s:"free"},
+        {code:"PC 4", spec:"RTX 3050",            rate:90,  s:"busy", t:"1H 12M LEFT",  e:28},
+        {code:"PC 5", spec:"ROG 4070",            rate:90,  s:"held", t:"HELD 9:30 PM"},
+        {code:"PC 6", spec:"ROG 4070",            rate:90,  s:"down", t:"SERVICE"},
+        {code:"PC 7", spec:"Simulator &middot; Logitech G29 + ROG", rate:120, s:"free", wide:true}
+      ]
+    },
+    kottayam:{
+      label:"Kottayam floor", open:"Open now, until 10:00 PM", next:"9:02 PM",
+      stations:[
+        {code:"PC 1", spec:"RTX 4060 Ti &middot; i5 14th Gen", rate:120, s:"free"},
+        {code:"PC 2", spec:"RTX 4060 Ti &middot; i5 14th Gen", rate:120, s:"busy", t:"22 MIN LEFT", e:74},
+        {code:"PC 3", spec:"RTX 4060 Ti &middot; i5 14th Gen", rate:120, s:"busy", t:"55 MIN LEFT", e:41},
+        {code:"PC 4", spec:"RTX 4060 Ti &middot; i5 14th Gen", rate:120, s:"free"},
+        {code:"PC 5", spec:"RTX 4060 Ti &middot; i5 14th Gen", rate:120, s:"busy", t:"8 MIN LEFT",  e:89},
+        {code:"PC 6", spec:"RTX 4060 Ti &middot; i5 14th Gen", rate:120, s:"free"}
+      ]
+    },
+    cochin:{
+      label:"Cochin floor", open:"Open now, until 11:00 PM", next:"8:49 PM",
+      stations:[
+        {code:"PC 1",  spec:"RTX 4060 Ti &middot; Core i5", rate:100, s:"busy", t:"45 MIN LEFT", e:52},
+        {code:"PC 2",  spec:"RTX 4060 Ti &middot; Core i5", rate:100, s:"free"},
+        {code:"PC 3",  spec:"RTX 4060 Ti &middot; Core i5", rate:100, s:"busy", t:"1H 05M LEFT", e:34},
+        {code:"PC 4",  spec:"RTX 4060 Ti &middot; Core i5", rate:100, s:"free"},
+        {code:"PC 5",  spec:"RTX 4060 Ti &middot; Core i5", rate:100, s:"busy", t:"12 MIN LEFT", e:84},
+        {code:"PC 6",  spec:"RTX 4060 Ti &middot; Core i5", rate:100, s:"down", t:"SERVICE"},
+        {code:"SIM 1", spec:"Thermaltake Racing Cockpit",  rate:300, s:"free", wide:true},
+        {code:"SIM 2", spec:"Logitech G29 Direct Drive",   rate:250, s:"busy", t:"30 MIN LEFT", e:60, wide:true},
+        {code:"PS5",   spec:"PlayStation 5 &middot; 4K HDR &middot; DualSense", rate:350, s:"busy", t:"1H 40M LEFT", e:22, wide:true}
+      ]
+    }
+  };
+
+  var root     = document.documentElement;
+  var grid     = document.getElementById("grid");
+  var ramp     = document.getElementById("ramp");
+  var palList  = document.getElementById("palList");
+  var rail     = document.querySelector(".rail i");
+  var plateLbl = document.querySelector(".plate-label");
+  var current  = "kollam";
+
+  function esc(s){ return s; }
+
+  function renderGrid(key){
+    var b = BRANCHES[key];
+    var free = 0, busy = 0, html = "";
+
+    b.stations.forEach(function(st){
+      if(st.s === "free") free++;
+      if(st.s === "busy") busy++;
+      var label = st.s === "free" ? "FREE" : st.t;
+      html +=
+        '<li class="st' + (st.wide ? ' wide' : '') + '" data-s="' + st.s + '"' +
+          (st.e ? ' style="--e:' + st.e + '%"' : '') + '>' +
+          '<div>' +
+            '<span class="code">' + esc(st.code) + '</span>' +
+            '<div class="spec">' + esc(st.spec) + '</div>' +
+          '</div>' +
+          '<div class="foot">' +
+            '<span class="state">' + esc(label) + '</span>' +
+            '<span class="rate">&#8377;' + st.rate + '/hr</span>' +
+          '</div>' +
+          (st.s === "busy" ? '<div class="meter"><i></i></div>' : '') +
+        '</li>';
+    });
+
+    grid.innerHTML = html;
+    document.getElementById("sFree").textContent  = free;
+    document.getElementById("sTotal").textContent = b.stations.length;
+    document.getElementById("sOpen").textContent  = b.open;
+    document.getElementById("sNext").textContent  = b.next;
+    if(plateLbl) plateLbl.textContent = b.label;
+
+    var pct = Math.round((busy / b.stations.length) * 100);
+    if(rail) rail.style.setProperty("--occ", pct + "%");
+
+    document.querySelectorAll(".branch").forEach(function(btn){
+      var bk = btn.getAttribute("data-branch");
+      var bb = BRANCHES[bk];
+      var f  = bb.stations.filter(function(s){ return s.s === "free"; }).length;
+      btn.querySelector("[data-count]").textContent = f + " of " + bb.stations.length + " free";
+      btn.setAttribute("aria-selected", bk === key ? "true" : "false");
+    });
+  }
+
+  function renderDirection(key){
+    var d = DIRECTIONS[key];
+    root.setAttribute("data-dir", key);
+
+    document.getElementById("cTag").textContent  = d.idx;
+    document.getElementById("cName").textContent = d.name;
+    document.getElementById("cLede").textContent = d.lede;
+    document.getElementById("cBody").textContent = d.body;
+    document.getElementById("cSig").textContent  = d.sig;
+
+    ramp.innerHTML = d.ramp.map(function(c){
+      return '<span style="background:' + c + '"></span>';
+    }).join("");
+
+    palList.innerHTML = d.pal.map(function(p){
+      return '<li><i style="background:' + p[0] + '"></i>' + p[1] + ' ' + p[0] + '</li>';
+    }).join("");
+
+    var meta = document.querySelector('meta[name="theme-color"]');
+    if(meta) meta.setAttribute("content", d.ramp[0]);
+
+    document.querySelectorAll(".opt").forEach(function(o){
+      o.setAttribute("aria-selected", o.getAttribute("data-set") === key ? "true" : "false");
+    });
+  }
+
+  document.querySelectorAll(".opt").forEach(function(btn){
+    btn.addEventListener("click", function(){
+      renderDirection(btn.getAttribute("data-set"));
+    });
+  });
+
+  document.querySelectorAll(".branch").forEach(function(btn){
+    btn.addEventListener("click", function(){
+      current = btn.getAttribute("data-branch");
+      renderGrid(current);
+    });
+  });
+
+  renderDirection("laterite");
+  renderGrid(current);
+})();
+</script>
+</body>
+</html>
