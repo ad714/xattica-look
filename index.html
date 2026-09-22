@@ -752,6 +752,59 @@ body::before{
 }
 .nrow .nm b{color:var(--acc-mid); font-weight:600;}
 
+/* ============================================================
+   MOBILE. He will open this on a phone, so it is the real target.
+   ============================================================ */
+@media (max-width:1040px){
+  /* read what a direction IS before scrolling through five phones of it */
+  .side{order:-1;}
+}
+
+@media (max-width:640px){
+  .wrap{padding:var(--u4) 16px 0;}
+
+  /* the masthead should not cost a whole screen before anything useful */
+  .masthead{gap:var(--u2); padding-bottom:var(--u3); margin-bottom:var(--u2);}
+  .masthead h1{font-size:30px; max-width:none;}
+  .masthead .note{font-size:14.5px; min-width:0; max-width:none;}
+
+  /* sticky bar: 184px was a fifth of the screen. Compact it. */
+  .switch{margin:0 -16px var(--u4); padding:8px 16px;}
+  .opt{padding:6px 0 5px; border-top-width:2px;}
+  .opt .num{display:none;}
+  .opt .nm{font-size:15px;}
+
+  /* 2 x 2, because each name is set in its OWN face and their widths differ
+     wildly. A single row clips Unbounded. */
+  .fontbar{
+    display:grid; grid-template-columns:1fr 1fr;
+    gap:0; margin-top:8px; padding-top:6px;
+  }
+  .fontbar .cap{display:none;}
+  .fontbar button{
+    font-size:14px; padding:4px 6px;
+    min-height:44px;            /* real touch target */
+    display:flex; flex-direction:column; justify-content:center;
+    text-align:left;
+    overflow:hidden;
+  }
+  .fontbar button:nth-child(odd){text-align:left;}
+  /* only the chosen face explains itself, so the row stays one line tall */
+  .fontbar button small{display:none;}
+  .fontbar button[aria-pressed="true"] small{display:block;}
+
+  /* claw back width for the screens themselves */
+  .device{padding:6px; border-radius:26px;}
+  .screen{border-radius:20px; min-height:600px;}
+  .devices{gap:var(--u4) 0;}
+  .dev-name{font-size:13px;}
+
+  .concept{padding:var(--u3);}
+  .pal-list{grid-template-columns:repeat(2,1fr);}
+  .legend .intro{font-size:14.5px;}
+  .close{padding:var(--u4) var(--u3);}
+}
+
 /* ---------- legend ---------- */
 .legend{margin-top:var(--u7);}
 .legend h2{
