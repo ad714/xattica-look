@@ -1,0 +1,1905 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>XATTICA Today</title>
+<meta name="description" content="Every screen of XATTICA Gaming Zone v2.8.6 exactly as it ships today, rebuilt from the app source.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<style>
+:root{
+  --page-bg:#eceef2; --page-fg:#14171c; --page-mut:#5b626e; --page-line:#d3d7de;
+  --panel:#ffffff;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --page-bg:#15171b; --page-fg:#eceef2; --page-mut:#9aa1ad; --page-line:#2c3037;
+    --panel:#1c1f25;
+  }
+}
+:root[data-theme="dark"]{
+  --page-bg:#15171b; --page-fg:#eceef2; --page-mut:#9aa1ad; --page-line:#2c3037;
+  --panel:#1c1f25;
+}
+
+/* ---- the app's own palette, copied verbatim from ui/theme/Color.kt ---- */
+.app{
+  --bg:#F6F8FB; --surface:#FFFFFF; --cardbg:#F8FAFC;
+  --cardborder:#E2E8F0; --chipbg:#F1F5F9; --chipborder:#E2E8F0; --chiptext:#334155;
+  --tp:#0F172A; --ts:#475569; --tm:#94A3B8;
+  --greensoft:#E8F8F2; --greenborder:#A7F3D0; --green:#059669;
+  --redsoft:#FEE2E2; --redborder:#FECACA;
+  --ambersoft:#FEF3C7; --amberborder:#FDE68A; --amber:#D97706;
+  --cyansoft:#E0F2FE; --cyan:#0284C7;
+  --navbg:#FFFFFF;
+  --stnborder:1px;
+}
+.app[data-app="dark"]{
+  --bg:#0B0E14; --surface:#131B2A; --cardbg:#0F172A;
+  --cardborder:#1E293B; --chipbg:#1E293B; --chipborder:#334155; --chiptext:#CBD5E1;
+  --tp:#F8FAFC; --ts:#94A3B8; --tm:#64748B;
+  --greensoft:#064E3B; --greenborder:#00E676; --green:#10B981;
+  --redsoft:#4C0519; --redborder:#F43F5E;
+  --ambersoft:#451A03; --amberborder:#F59E0B; --amber:#FBBF24;
+  --cyansoft:#082F49; --cyan:#38BDF8;
+  --navbg:#0D1117;
+  --stnborder:1.5px;
+}
+/* fixed brand colours (not theme dependent in the source) */
+.app{
+  --red:#D9232D; --neonpurple:#7C3AED; --neonpink:#F43F5E; --neoncyan:#00E5FF;
+  --purplesoft:#F3E8FF; --pinksoft:#FFE4E6; --neonamber:#F59E0B; --greenbtn:#059669;
+}
+
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0; background:var(--page-bg); color:var(--page-fg);
+  font-family:"Roboto",system-ui,sans-serif; font-size:16px; line-height:1.5;
+}
+.wrap{max-width:1360px; margin:0 auto; padding:0 16px}
+
+/* ---------- page chrome ---------- */
+header.top{padding:48px 0 28px; border-bottom:1px solid var(--page-line); margin-bottom:34px}
+header.top h1{margin:0 0 12px; font-size:clamp(26px,4.4vw,40px); font-weight:900; letter-spacing:-.02em; line-height:1.12; max-width:20ch}
+header.top p{margin:0 0 10px; max-width:64ch; color:var(--page-mut); font-size:15px}
+header.top p strong{color:var(--page-fg); font-weight:700}
+.meta{display:flex; flex-wrap:wrap; gap:8px 18px; margin-top:18px; font-size:13px; color:var(--page-mut)}
+.meta b{color:var(--page-fg); font-weight:700}
+
+.controls{position:sticky; top:0; z-index:40; background:var(--page-bg); border-bottom:1px solid var(--page-line); padding:10px 0; margin-bottom:28px}
+.controls .wrap{display:flex; flex-wrap:wrap; gap:10px; align-items:center}
+.controls .lbl{font-size:12px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--page-mut); margin-right:2px}
+.tog{display:flex; border:1px solid var(--page-line); border-radius:8px; overflow:hidden; background:var(--panel)}
+.tog button{appearance:none; border:0; background:transparent; color:var(--page-fg); font:inherit; font-size:13px; font-weight:600; padding:8px 14px; cursor:pointer; min-height:36px}
+.tog button[aria-pressed="true"]{background:var(--page-fg); color:var(--page-bg)}
+
+section.grp{margin:0 0 44px}
+section.grp > h2{font-size:20px; font-weight:800; margin:0 0 6px; letter-spacing:-.01em}
+section.grp > .sub{margin:0 0 24px; color:var(--page-mut); font-size:14px; max-width:70ch}
+
+.rail{display:flex; flex-wrap:wrap; gap:28px 22px}
+figure.fr{margin:0; width:390px; max-width:100%}
+figure.fr figcaption{margin:0 0 10px}
+figure.fr .cap-n{font-size:15px; font-weight:800; display:block}
+figure.fr .cap-d{font-size:13px; color:var(--page-mut); display:block; margin-top:2px}
+figure.fr .cap-f{display:block; margin-top:6px; font-size:12.5px; color:var(--page-fg); border-left:3px solid #D9232D; padding-left:9px}
+
+/* ---------- phone frame ---------- */
+.phone{
+  width:390px; max-width:100%; height:760px; border-radius:26px; overflow:hidden;
+  border:1px solid var(--page-line); background:#000; position:relative;
+  display:flex; flex-direction:column;
+}
+.app{display:flex; flex-direction:column; height:100%; background:var(--bg); color:var(--tp); font-size:13px; line-height:1.35}
+.scr{flex:1; overflow-y:auto; overflow-x:hidden; background:var(--bg)}
+.scr::-webkit-scrollbar{width:5px}
+.scr::-webkit-scrollbar-thumb{background:rgba(128,128,128,.45); border-radius:3px}
+.pad{padding:12px 14px 24px}
+
+.material-icons{font-family:"Material Icons"; font-weight:normal; font-style:normal; line-height:1; letter-spacing:normal; text-transform:none; display:inline-block; white-space:nowrap; word-wrap:normal; direction:ltr; -webkit-font-feature-settings:"liga"; -webkit-font-smoothing:antialiased; vertical-align:middle}
+
+/* ---------- primitives mirroring the Compose components ---------- */
+.row{display:flex; align-items:center}
+.between{display:flex; align-items:center; justify-content:space-between}
+.col{display:flex; flex-direction:column}
+.gap4{gap:4px}.gap6{gap:6px}.gap8{gap:8px}.gap10{gap:10px}
+.sp4{height:4px}.sp6{height:6px}.sp8{height:8px}.sp10{height:10px}.sp12{height:12px}.sp14{height:14px}.sp16{height:16px}.sp20{height:20px}.sp24{height:24px}
+.card{background:var(--surface); border:1px solid var(--cardborder); border-radius:14px}
+.r8{border-radius:8px}.r10{border-radius:10px}.r12{border-radius:12px}.r16{border-radius:16px}.r18{border-radius:18px}
+.p10{padding:10px}.p12{padding:12px}.p14{padding:14px}.p16{padding:16px}
+.mut{color:var(--tm)}.sec{color:var(--ts)}.pri{color:var(--tp)}
+.b{font-weight:700}.blk{font-weight:900}.med{font-weight:500}
+.f9{font-size:9px}.f95{font-size:9.5px}.f10{font-size:10px}.f105{font-size:10.5px}.f11{font-size:11px}.f115{font-size:11.5px}.f12{font-size:12px}.f13{font-size:13px}.f14{font-size:14px}.f15{font-size:15px}.f16{font-size:16px}.f17{font-size:17px}.f18{font-size:18px}
+.ls{letter-spacing:.5px}.ls8{letter-spacing:.8px}.ls1{letter-spacing:1px}
+.ell{overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+.dot{width:7px;height:7px;border-radius:50%;flex:0 0 auto}
+.circ{border-radius:50%; display:flex; align-items:center; justify-content:center; flex:0 0 auto}
+
+.pill{display:inline-flex; align-items:center; gap:4px; white-space:nowrap; border-radius:20px; padding:3px 7px; font-size:9.5px; font-weight:700; border:1px solid}
+.pill.green{background:var(--greensoft); border-color:var(--greenborder); color:var(--green)}
+.pill.red{background:var(--redsoft); border-color:var(--redborder); color:var(--red)}
+.pill.amber{background:var(--ambersoft); border-color:var(--amberborder); color:var(--amber)}
+
+.btn{appearance:none; border:0; font:inherit; font-weight:700; border-radius:8px; padding:6px 12px; display:inline-flex; align-items:center; justify-content:center; gap:6px; cursor:default; font-size:11px; line-height:1.2}
+.btn.chip{background:var(--chipbg); color:var(--tp); border:1px solid var(--cardborder)}
+.btn.wa{background:var(--greensoft); color:var(--green); border:1px solid var(--greenborder)}
+.btn.redfill{background:var(--red); color:#fff}
+.btn.greenfill{background:var(--green); color:#fff}
+.btn.full{width:100%; padding:10px 12px; border-radius:10px; font-size:12px}
+
+/* bottom nav */
+.nav{display:flex; background:var(--navbg); border-top:1px solid var(--cardborder); padding:8px 0 10px; flex:0 0 auto}
+.nav .it{flex:1; display:flex; flex-direction:column; align-items:center; gap:3px; color:var(--tm)}
+.nav .ic{width:56px; height:30px; border-radius:15px; display:flex; align-items:center; justify-content:center}
+.nav .ic .material-icons{font-size:21px}
+.nav .lb{font-size:9.5px; font-weight:500; white-space:nowrap}
+.nav .it.on .lb{font-weight:700}
+.app:not([data-app="dark"]) .nav .it.on{color:var(--red)}
+.app:not([data-app="dark"]) .nav .it.on .ic{background:var(--redsoft)}
+.app[data-app="dark"] .nav .it.on .ic{background:#10B981; color:#0B0E14}
+.app[data-app="dark"] .nav .it.on .lb{color:#10B981}
+
+/* station card */
+.stn{background:var(--surface); border:var(--stnborder) solid var(--cardborder); border-radius:12px; padding:8px; display:flex; flex-direction:column; min-width:0}
+.stn.ok{border-color:var(--greenborder)}
+.stn.busy{border-color:var(--redborder)}
+.stn.res{border-color:var(--amberborder)}
+.stn .hd{display:flex; align-items:center; justify-content:space-between; gap:4px}
+.stn .ti{width:22px; height:22px; border-radius:50%; display:flex; align-items:center; justify-content:center; flex:0 0 auto}
+.stn .ti .material-icons{font-size:12px}
+.stn .code{font-size:12px; font-weight:700; white-space:nowrap}
+.stn .rate{background:var(--chipbg); border:.8px solid var(--chipborder); color:var(--chiptext); border-radius:4px; padding:1.5px 4px; font-size:8px; font-weight:700; white-space:nowrap}
+.stn .spec{font-size:9px; font-weight:500; color:var(--tm); overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+.stn .game{font-size:9.5px; color:var(--ts); overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+.badge{display:flex; align-items:center; justify-content:center; gap:4px; border-radius:5px; border:.8px solid; padding:3px 5px; font-size:9.5px; font-weight:700; letter-spacing:.2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+.badge .d{width:5px;height:5px;border-radius:50%;flex:0 0 auto; animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:.4}50%{opacity:1}}
+@media (prefers-reduced-motion: reduce){ .badge .d{animation:none; opacity:1} }
+.badge.ok{background:var(--greensoft); border-color:var(--greenborder); color:var(--green)}
+.badge.busy{background:var(--redsoft); border-color:var(--redborder); color:var(--red)}
+.badge.res{background:var(--ambersoft); border-color:var(--amberborder); color:var(--amber)}
+.badge.maint{background:var(--chipbg); border-color:var(--cardborder); color:var(--tm); font-size:8px; letter-spacing:0}
+.grid2{display:grid; grid-template-columns:1fr 1fr; gap:6px}
+.grid3{display:grid; grid-template-columns:1fr 1fr 1fr; gap:6px}
+.aisle{height:24px; border-radius:6px; background:var(--chipbg); border:1px solid var(--cardborder); display:flex; align-items:center; justify-content:center; font-size:9px; font-weight:700; letter-spacing:1.2px; color:var(--ts)}
+
+/* chips row */
+.chips{display:flex; gap:8px; overflow-x:auto; padding-bottom:2px; scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:0 0 auto; border-radius:8px; border:1px solid var(--cardborder); background:var(--surface); color:var(--tp); padding:6px 12px; font-size:12px; font-weight:500; white-space:nowrap}
+.chip.on{background:var(--red); border-color:var(--red); color:#fff; font-weight:700}
+.chip.oncyan{background:var(--cyan); border-color:var(--cyan); color:#000; font-weight:700}
+.chip.onamber{background:var(--amber); border-color:var(--amber); color:#000; font-weight:700}
+.chip.onblue{background:#3B82F6; border-color:#3B82F6; color:#fff; font-weight:700}
+
+/* branch switcher */
+.switcher{display:flex; gap:6px; background:var(--surface); border:1px solid var(--cardborder); border-radius:12px; padding:4px}
+.switcher .b1{flex:1; border-radius:9px; padding:7px 0; text-align:center; font-size:11.5px; font-weight:700; color:var(--ts); white-space:nowrap}
+.switcher .b1.on{background:var(--red); color:#fff; font-weight:900}
+
+/* store list images */
+.ph{width:100%; background:var(--chipbg); border:1px solid var(--cardborder); border-radius:10px; display:flex; align-items:center; justify-content:center; color:var(--tm); font-size:10px; font-weight:700; letter-spacing:.06em; text-align:center; padding:8px}
+.specrow{display:flex; justify-content:space-between; gap:10px; font-size:11px}
+.specrow .k{color:var(--tm); white-space:nowrap}
+.specrow .v{color:var(--tp); font-weight:700; overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+.strike{text-decoration:line-through; color:var(--tm); font-size:12px}
+
+/* dialog / sheet overlays */
+.ovl{position:absolute; inset:0; background:rgba(0,0,0,.55); display:flex; padding:0}
+.ovl.center{align-items:center; justify-content:center; padding:20px}
+.ovl.bottom{align-items:flex-end}
+.dlg{background:var(--surface); border-radius:20px; border:1px solid var(--cardborder); width:100%; max-height:92%; overflow-y:auto; padding:20px}
+.sheet{background:var(--surface); border-radius:28px 28px 0 0; width:100%; max-height:88%; overflow-y:auto; padding:0 20px 32px}
+.sheet .drag{width:32px; height:4px; border-radius:2px; background:var(--tm); opacity:.4; margin:12px auto 14px}
+.tf{border:1px solid var(--cardborder); border-radius:10px; background:var(--surface); padding:12px 12px; display:flex; align-items:center; gap:10px; color:var(--tm); font-size:13px}
+
+/* admin bits */
+.kv{display:flex; justify-content:space-between; align-items:center; gap:8px; background:var(--cardbg); border:1px solid var(--cardborder); border-radius:8px; padding:6px 10px}
+.sw{width:44px; height:24px; border-radius:12px; background:var(--green); position:relative; flex:0 0 auto}
+.sw::after{content:""; position:absolute; top:3px; right:3px; width:18px; height:18px; border-radius:50%; background:#fff}
+.sw.off{background:var(--red)}
+.sw.off::after{right:auto; left:3px}
+.money{font-size:26px; font-weight:900; color:var(--green)}
+
+/* splash */
+.splash{flex:1; background:#05070B; display:flex; align-items:center; justify-content:center; position:relative; overflow:hidden}
+.splash .glow{position:absolute; width:320px; height:320px; border-radius:50%; background:radial-gradient(circle, rgba(217,35,45,.55) 0%, rgba(217,35,45,.25) 35%, rgba(217,35,45,.08) 60%, transparent 72%)}
+.splash .inner{position:relative; display:flex; flex-direction:column; align-items:center; padding:24px}
+.splash .logo{width:120px; height:120px; border-radius:26px; background:#0D0F14; border:2px solid rgba(217,35,45,.8); padding:8px; display:flex; align-items:center; justify-content:center}
+.splash .logo img{width:100%; height:100%; object-fit:contain}
+.splash .wm{display:flex; font-size:24px; font-weight:900; letter-spacing:1.5px; margin-top:20px}
+.splash .tag{margin-top:14px; border-radius:30px; padding:9px 18px; display:flex; align-items:center; gap:9px;
+  background:linear-gradient(90deg,#2A0609,#4A0A10,#2A0609); border:1.5px solid rgba(217,35,45,.8);
+  color:#FFECEE; font-size:11px; font-weight:900; letter-spacing:1.2px}
+
+.logo44{width:44px; height:44px; border-radius:12px; background:#fff; border:1.5px solid var(--red); object-fit:contain; flex:0 0 auto}
+.logo36{width:36px; height:36px; border-radius:10px; background:#fff; border:1px solid var(--red); object-fit:contain; flex:0 0 auto}
+
+footer.end{border-top:1px solid var(--page-line); margin-top:16px; padding:28px 0 64px; color:var(--page-mut); font-size:13px}
+footer.end p{margin:0 0 8px; max-width:70ch}
+
+@media (max-width:640px){
+  .wrap{padding:0 16px}
+  header.top{padding:32px 0 22px; margin-bottom:24px}
+  .rail{gap:30px 0}
+  figure.fr, .phone{width:100%}
+  .phone{height:700px}
+}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <h1>XATTICA as it ships today</h1>
+    <p>This is not a proposal. Every screen below is the <strong>current</strong> app, version 2.8.6, rebuilt screen by screen from the Kotlin source so you can see it on a laptop without installing anything. Same colours, same fonts, same wording, same layout, same spacing.</p>
+    <p>Look through it and tell me what you want kept, what you want changed, and what you never use.</p>
+    <div class="meta">
+      <span><b>App</b> XATTICA Gaming Zone</span>
+      <span><b>Version</b> 2.8.6 (build 33)</span>
+      <span><b>Package</b> com.gamingzone.app</span>
+      <span><b>Screens shown</b> 14</span>
+    </div>
+  </div>
+</header>
+
+<div class="controls">
+  <div class="wrap">
+    <span class="lbl">App theme</span>
+    <div class="tog" role="group" aria-label="App theme shown inside the phones">
+      <button type="button" data-app-mode="light" aria-pressed="true">Light</button>
+      <button type="button" data-app-mode="dark" aria-pressed="false">Dark</button>
+    </div>
+    <span class="lbl" style="margin-left:14px">Page</span>
+    <div class="tog" role="group" aria-label="Page theme">
+      <button type="button" data-page-mode="light" aria-pressed="false">Light</button>
+      <button type="button" data-page-mode="dark" aria-pressed="false">Dark</button>
+    </div>
+  </div>
+</div>
+
+<main class="wrap">
+
+<!-- ============================ FIRST RUN ============================ -->
+<section class="grp">
+  <h2>Opening the app</h2>
+  <p class="sub">What a customer sees in the first five seconds after tapping the icon.</p>
+  <div class="rail">
+
+    <!-- SPLASH -->
+    <figure class="fr">
+      <figcaption>
+        <span class="cap-n">Splash screen</span>
+        <span class="cap-d">Shows for one second on every launch, then fades to the floor.</span>
+      </figcaption>
+      <div class="phone"><div class="app" data-app="light">
+        <div class="splash">
+          <div class="glow"></div>
+          <div class="inner">
+            <div class="logo"><img src="xattica-logo.jpg" alt="XATTICA logo"></div>
+            <div class="wm"><span style="color:#fff">XATTICA&nbsp;</span><span style="color:#D9232D">GAMING</span></div>
+            <div class="tag"><span style="width:7px;height:7px;border-radius:50%;background:#D9232D;display:inline-block"></span>PREMIUM GAMING STARTS HERE</div>
+          </div>
+        </div>
+      </div></div>
+    </figure>
+
+    <!-- NEAREST STORE DIALOG -->
+    <figure class="fr">
+      <figcaption>
+        <span class="cap-n">Pick your nearest store</span>
+        <span class="cap-d">Appears once, on first install, before anything else is usable.</span>
+      </figcaption>
+      <div class="phone"><div class="app" data-app="light">
+        <div class="scr">
+          <div class="pad" style="opacity:.35">
+            <div class="row gap10">
+              <img class="logo44" src="xattica-logo.jpg" alt="">
+              <div class="col"><span class="f15 blk">XATTICA GAMING</span><span class="f95 b" style="color:var(--green)">LIVE • KOLLAM</span></div>
+            </div>
+            <div class="sp12"></div>
+            <div class="switcher"><div class="b1 on">📍 Kollam</div><div class="b1">Kottayam</div><div class="b1">Cochin</div></div>
+            <div class="sp10"></div>
+            <div class="card r10" style="height:34px"></div>
+            <div class="sp10"></div>
+            <div class="card r12" style="height:46px"></div>
+            <div class="sp14"></div>
+            <div class="card" style="height:104px"></div>
+            <div class="sp14"></div>
+            <div class="card" style="height:300px"></div>
+          </div>
+          <div class="ovl center">
+            <div class="dlg">
+              <div class="row gap10">
+                <div class="circ" style="width:38px;height:38px;background:var(--redsoft)"><span class="material-icons" style="font-size:22px;color:var(--red)">place</span></div>
+                <div class="col">
+                  <span class="f16 blk">Select Nearest Store</span>
+                  <span class="f11 sec">Get store open/close &amp; full alerts</span>
+                </div>
+              </div>
+              <div class="sp12"></div>
+              <p class="f12 sec" style="margin:0; line-height:16px">Choose your nearest XATTICA store. Push notifications for store open/close and 100% full capacity alerts will only be sent for your selected store.</p>
+              <div class="sp10"></div>
+              <div class="col gap10">
+                <div class="between r12 p12" style="background:var(--redsoft); border:1.5px solid var(--red)">
+                  <div class="row gap10" style="min-width:0">
+                    <div class="circ" style="width:32px;height:32px;background:var(--red)"><span class="material-icons" style="font-size:18px;color:#fff">location_on</span></div>
+                    <div class="col" style="min-width:0">
+                      <span class="f13 b" style="color:var(--red)">XATTICA KOLLAM</span>
+                      <span class="f10 mut ell">Velayudha Mansion, Salem-Kanyakumari Highway, Karbala, Kollam, Kerala - 691001</span>
+                    </div>
+                  </div>
+                  <span class="material-icons" style="font-size:18px;color:var(--red)">check_circle</span>
+                </div>
+                <div class="between r12 p12" style="background:var(--surface); border:1.5px solid var(--cardborder)">
+                  <div class="row gap10" style="min-width:0">
+                    <div class="circ" style="width:32px;height:32px;background:var(--chipbg)"><span class="material-icons" style="font-size:18px;color:var(--tm)">location_on</span></div>
+                    <div class="col" style="min-width:0">
+                      <span class="f13 b">XATTICA KOTTAYAM</span>
+                      <span class="f10 mut ell">Padinjarekkara Auditorium, Bakers Junction, Kottayam, Kerala - 686001</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="between r12 p12" style="background:var(--surface); border:1.5px solid var(--cardborder)">
+                  <div class="row gap10" style="min-width:0">
+                    <div class="circ" style="width:32px;height:32px;background:var(--chipbg)"><span class="material-icons" style="font-size:18px;color:var(--tm)">location_on</span></div>
+                    <div class="col" style="min-width:0">
+                      <span class="f13 b">XATTICA COCHIN</span>
+                      <span class="f10 mut ell">Ground Floor, Metro Pillar No: 834, AC City, Sahodaran Ayyappan Road, Vyttila, Kochi, Ernakulam, Kerala - 682019</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="sp16"></div>
+              <div style="text-align:right"><span class="btn redfill" style="font-size:12px; padding:8px 14px">Confirm Store</span></div>
+            </div>
+          </div>
+        </div>
+      </div></div>
+    </figure>
+
+  </div>
+</section>
+
+<!-- ============================ TAB 1 ============================ -->
+<section class="grp">
+  <h2>Tab 1: Gaming Zone</h2>
+  <p class="sub">The screen the app opens on. Branch switcher, live occupancy, floor plan, then the station list.</p>
+  <div class="rail">
+
+    <!-- KOLLAM OPEN -->
+    <figure class="fr">
+      <figcaption>
+        <span class="cap-n">Kollam, store open</span>
+        <span class="cap-d">The full screen, scrollable. Scroll inside the phone.</span>
+        <span class="cap-f">Every station is drawn twice: once in the floor plan, again in the list below it.</span>
+      </figcaption>
+      <div class="phone"><div class="app" data-app="light">
+        <div class="scr">
+          <div class="pad">
+
+            <!-- top bar -->
+            <div class="between">
+              <div class="row gap10" style="min-width:0">
+                <img class="logo44" src="xattica-logo.jpg" alt="XATTICA logo">
+                <div class="col" style="min-width:0">
+                  <span class="f15 blk ell" style="letter-spacing:.4px">XATTICA GAMING</span>
+                  <span class="f95 b ell" style="color:var(--green); letter-spacing:.3px">LIVE • KOLLAM</span>
+                </div>
+              </div>
+              <div class="row" style="gap:2px">
+                <span class="pill green"><span class="dot" style="width:5px;height:5px;background:var(--green)"></span>OPEN</span>
+                <span class="material-icons" style="font-size:20px;color:var(--red);padding:7px">location_on</span>
+                <span class="material-icons" style="font-size:20px;color:var(--tp);padding:7px">more_vert</span>
+              </div>
+            </div>
+
+            <div class="sp12"></div>
+            <div class="switcher">
+              <div class="b1 on">📍 Kollam 🔔</div>
+              <div class="b1">Kottayam</div>
+              <div class="b1">Cochin</div>
+            </div>
+
+            <div class="sp6"></div>
+            <div class="row r8" style="background:var(--greensoft); border:1px solid var(--greenborder); padding:5px 8px; gap:5px">
+              <span class="f11">🔔</span>
+              <span class="f10 b ell" style="color:var(--green)">Nearest Store: Kollam • Open/Close &amp; Full alerts active</span>
+            </div>
+
+            <div class="sp10"></div>
+            <!-- date bar -->
+            <div class="between r10" style="background:var(--surface); border:1px solid var(--cardborder); padding:7px 10px">
+              <div class="row gap6" style="min-width:0">
+                <span class="material-icons" style="font-size:13px;color:var(--red)">calendar_today</span>
+                <span class="f11 b ell">Wednesday, 23 September 2026</span>
+              </div>
+              <span class="f10 blk mut ls8" style="white-space:nowrap">KOLLAM</span>
+            </div>
+
+            <div class="sp10"></div>
+            <!-- contact bar -->
+            <div class="between r12" style="background:var(--surface); border:1px solid var(--cardborder); padding:8px 10px">
+              <div class="row gap8" style="min-width:0">
+                <div class="circ" style="width:28px;height:28px;background:var(--redsoft)"><span class="material-icons" style="font-size:14px;color:var(--red)">phone</span></div>
+                <div class="col" style="min-width:0">
+                  <span class="f12 b" style="white-space:nowrap">📍 Kollam</span>
+                  <span class="f105 med sec" style="white-space:nowrap">+91 9961123434</span>
+                </div>
+              </div>
+              <div class="row gap6">
+                <span class="btn chip">Call</span>
+                <span class="btn wa">WhatsApp</span>
+              </div>
+            </div>
+
+            <div class="sp14"></div>
+            <!-- occupancy -->
+            <div class="card p14">
+              <div class="between">
+                <span class="f105 b mut ell" style="letter-spacing:.6px">LIVE OCCUPANCY STATUS</span>
+                <span class="pill green" style="font-size:10.5px">3/7 Free</span>
+              </div>
+              <div class="sp10"></div>
+              <div class="between">
+                <div class="row gap4"><span class="dot" style="background:var(--green)"></span><span class="f115 med">3 Available</span></div>
+                <div class="row gap4"><span class="dot" style="background:var(--red)"></span><span class="f115 med">2 In Use</span></div>
+                <div class="row gap4"><span class="dot" style="background:var(--amber)"></span><span class="f115 med">1 Reserved</span></div>
+              </div>
+              <div class="sp10"></div>
+              <div class="row r8 gap4" style="background:var(--cyansoft); border:1px solid rgba(2,132,199,.3); padding:5px 8px">
+                <span class="f105 b" style="color:var(--cyan)">⚡ Next:</span>
+                <span class="f105 b ell">PC 2 frees up in 38m</span>
+              </div>
+            </div>
+
+            <div class="sp14"></div>
+            <!-- floor plan -->
+            <div class="card p10">
+              <div class="between">
+                <span class="f115 blk ell ls" style="color:var(--red)">📍 KOLLAM FLOOR PLAN</span>
+                <span style="background:var(--greensoft); border:.8px solid var(--greenborder); color:var(--green); border-radius:6px; padding:2.5px 6px; font-size:9.5px; font-weight:700; white-space:nowrap">TAP TO VIEW SPECS</span>
+              </div>
+              <div class="sp12"></div>
+              <div class="f105 b sec">TOP BATTLE RIGS (PC1 - PC4)</div>
+              <div class="sp6"></div>
+
+              <div class="grid2">
+                <div class="stn ok">
+                  <div class="hd">
+                    <div class="row gap4" style="min-width:0"><div class="ti" style="background:rgba(0,229,255,.2)"><span class="material-icons" style="color:var(--neoncyan)">laptop</span></div><span class="code">PC 1</span></div>
+                    <span class="rate">₹90/hr • 10AM-6PM</span>
+                  </div>
+                  <div class="sp4"></div><div class="spec">RTX 5060</div><div class="sp4"></div>
+                  <div class="badge ok"><span class="d" style="background:var(--green)"></span>AVAILABLE</div>
+                </div>
+                <div class="stn busy">
+                  <div class="hd">
+                    <div class="row gap4" style="min-width:0"><div class="ti" style="background:rgba(0,229,255,.2)"><span class="material-icons" style="color:var(--neoncyan)">laptop</span></div><span class="code">PC 2</span></div>
+                    <span class="rate">₹90/hr • 10AM-6PM</span>
+                  </div>
+                  <div class="sp4"></div><div class="game">🎮 Valorant</div><div class="sp4"></div>
+                  <div class="badge busy"><span class="d" style="background:var(--red)"></span>38m 12s left left</div>
+                </div>
+              </div>
+              <div class="sp6"></div>
+              <div class="grid2">
+                <div class="stn ok">
+                  <div class="hd">
+                    <div class="row gap4" style="min-width:0"><div class="ti" style="background:rgba(0,229,255,.2)"><span class="material-icons" style="color:var(--neoncyan)">laptop</span></div><span class="code">PC 3</span></div>
+                    <span class="rate">₹90/hr • 10AM-6PM</span>
+                  </div>
+                  <div class="sp4"></div><div class="spec">RX 7900XT</div><div class="sp4"></div>
+                  <div class="badge ok"><span class="d" style="background:var(--green)"></span>AVAILABLE</div>
+                </div>
+                <div class="stn">
+                  <div class="hd">
+                    <div class="row gap4" style="min-width:0"><div class="ti" style="background:rgba(0,229,255,.2)"><span class="material-icons" style="color:var(--neoncyan)">laptop</span></div><span class="code">PC 4</span></div>
+                    <span class="rate" style="display:inline-flex;align-items:center;gap:2.5px"><span class="material-icons" style="font-size:8px">build</span>OFFLINE</span>
+                  </div>
+                  <div class="sp4"></div><div class="spec">RTX 3050</div><div class="sp4"></div>
+                  <div class="badge maint"><span class="material-icons" style="font-size:9.5px">build</span>MAINTENANCE MODE</div>
+                </div>
+              </div>
+
+              <div class="sp16"></div>
+              <div class="aisle">••• CENTRAL AISLE &amp; PASSAGE •••</div>
+              <div class="sp16"></div>
+
+              <div class="f11 b sec">BOTTOM BATTLE RIGS &amp; RACING SIMULATOR</div>
+              <div class="sp8"></div>
+              <div class="grid2" style="gap:8px">
+                <div class="stn busy">
+                  <div class="hd">
+                    <div class="row gap4" style="min-width:0"><div class="ti" style="background:rgba(0,229,255,.2)"><span class="material-icons" style="color:var(--neoncyan)">laptop</span></div><span class="code">PC 5</span></div>
+                    <span class="rate">₹90/hr • 10AM-6PM</span>
+                  </div>
+                  <div class="sp4"></div><div class="game">🎮 GTA V</div><div class="sp4"></div>
+                  <div class="badge busy"><span class="d" style="background:var(--red)"></span>1h 5m left left</div>
+                </div>
+                <div class="stn ok">
+                  <div class="hd">
+                    <div class="row gap4" style="min-width:0"><div class="ti" style="background:rgba(0,229,255,.2)"><span class="material-icons" style="color:var(--neoncyan)">laptop</span></div><span class="code">PC 6</span></div>
+                    <span class="rate">₹90/hr • 10AM-6PM</span>
+                  </div>
+                  <div class="sp4"></div><div class="spec">ROG 4070</div><div class="sp4"></div>
+                  <div class="badge ok"><span class="d" style="background:var(--green)"></span>AVAILABLE</div>
+                </div>
+              </div>
+              <div class="sp8"></div>
+              <div class="stn res">
+                <div class="hd">
+                  <div class="row gap4" style="min-width:0"><div class="ti" style="background:rgba(124,58,237,.2)"><span class="material-icons" style="color:var(--neonpurple)">directions_car</span></div><span class="code">PC 7</span></div>
+                  <span class="rate">₹120/hr (Sim)</span>
+                </div>
+                <div class="sp4"></div><div class="spec">LOGITECH G29 + ROG</div><div class="sp4"></div>
+                <div class="badge res"><span class="d" style="background:var(--amber)"></span>📅 Today @ 4:00 PM - 6:00 PM</div>
+              </div>
+            </div>
+
+            <div class="sp16"></div>
+            <div class="f11 b sec ls1">EXPLORE STATIONS</div>
+            <div class="sp8"></div>
+            <div class="chips">
+              <span class="chip on">All Stations</span>
+              <span class="chip">Available Now</span>
+              <span class="chip">Racing Sim Only</span>
+              <span class="chip">Free in &lt; 30m</span>
+            </div>
+
+            <div class="sp12"></div>
+            <div class="col gap10">
+              <div class="stn ok">
+                <div class="hd">
+                  <div class="row gap4"><div class="ti" style="background:rgba(0,229,255,.2)"><span class="material-icons" style="color:var(--neoncyan)">laptop</span></div><span class="code">PC 1</span></div>
+                  <span class="rate">₹90/hr • 10AM-6PM</span>
+                </div>
+                <div class="sp4"></div><div class="spec">RTX 5060</div><div class="sp4"></div>
+                <div class="badge ok"><span class="d" style="background:var(--green)"></span>AVAILABLE</div>
+              </div>
+              <div class="stn busy">
+                <div class="hd">
+                  <div class="row gap4"><div class="ti" style="background:rgba(0,229,255,.2)"><span class="material-icons" style="color:var(--neoncyan)">laptop</span></div><span class="code">PC 2</span></div>
+                  <span class="rate">₹90/hr • 10AM-6PM</span>
+                </div>
+                <div class="sp4"></div><div class="game">🎮 Valorant</div><div class="sp4"></div>
+                <div class="badge busy"><span class="d" style="background:var(--red)"></span>38m 12s left left</div>
+              </div>
+              <div class="stn ok">
+                <div class="hd">
+                  <div class="row gap4"><div class="ti" style="background:rgba(0,229,255,.2)"><span class="material-icons" style="color:var(--neoncyan)">laptop</span></div><span class="code">PC 3</span></div>
+                  <span class="rate">₹90/hr • 10AM-6PM</span>
+                </div>
+                <div class="sp4"></div><div class="spec">RX 7900XT</div><div class="sp4"></div>
+                <div class="badge ok"><span class="d" style="background:var(--green)"></span>AVAILABLE</div>
+              </div>
+              <div class="stn">
+                <div class="hd">
+                  <div class="row gap4"><div class="ti" style="background:rgba(0,229,255,.2)"><span class="material-icons" style="color:var(--neoncyan)">laptop</span></div><span class="code">PC 4</span></div>
+                  <span class="rate" style="display:inline-flex;align-items:center;gap:2.5px"><span class="material-icons" style="font-size:8px">build</span>OFFLINE</span>
+                </div>
+                <div class="sp4"></div><div class="spec">RTX 3050</div><div class="sp4"></div>
+                <div class="badge maint"><span class="material-icons" style="font-size:9.5px">build</span>MAINTENANCE MODE</div>
+              </div>
+              <div class="stn busy">
+                <div class="hd">
+                  <div class="row gap4"><div class="ti" style="background:rgba(0,229,255,.2)"><span class="material-icons" style="color:var(--neoncyan)">laptop</span></div><span class="code">PC 5</span></div>
+                  <span class="rate">₹90/hr • 10AM-6PM</span>
+                </div>
+                <div class="sp4"></div><div class="game">🎮 GTA V</div><div class="sp4"></div>
+                <div class="badge busy"><span class="d" style="background:var(--red)"></span>1h 5m left left</div>
+              </div>
+              <div class="stn ok">
+                <div class="hd">
+                  <div class="row gap4"><div class="ti" style="background:rgba(0,229,255,.2)"><span class="material-icons" style="color:var(--neoncyan)">laptop</span></div><span class="code">PC 6</span></div>
+                  <span class="rate">₹90/hr • 10AM-6PM</span>
+                </div>
+                <div class="sp4"></div><div class="spec">ROG 4070</div><div class="sp4"></div>
+                <div class="badge ok"><span class="d" style="background:var(--green)"></span>AVAILABLE</div>
+              </div>
+              <div class="stn res">
+                <div class="hd">
+                  <div class="row gap4"><div class="ti" style="background:rgba(124,58,237,.2)"><span class="material-icons" style="color:var(--neonpurple)">directions_car</span></div><span class="code">PC 7</span></div>
+                  <span class="rate">₹120/hr (Sim)</span>
+                </div>
+                <div class="sp4"></div><div class="spec">LOGITECH G29 + ROG</div><div class="sp4"></div>
+                <div class="badge res"><span class="d" style="background:var(--amber)"></span>📅 Today @ 4:00 PM - 6:00 PM</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <nav class="nav">
+          <div class="it on"><div class="ic"><span class="material-icons">grid_view</span></div><span class="lb">Gaming Zone</span></div>
+          <div class="it"><div class="ic"><span class="material-icons">shopping_cart</span></div><span class="lb">PC Store</span></div>
+          <div class="it"><div class="ic"><span class="material-icons">auto_awesome</span></div><span class="lb">Stories</span></div>
+          <div class="it"><div class="ic"><span class="material-icons">feed</span></div><span class="lb">Tech News</span></div>
+        </nav>
+      </div></div>
+    </figure>
+
+    <!-- CLOSED -->
+    <figure class="fr">
+      <figcaption>
+        <span class="cap-n">Store closed</span>
+        <span class="cap-d">What customers see when staff flip the Open switch off.</span>
+        <span class="cap-f">The reopening time is hardcoded to "tomorrow 10:00 AM" for all three branches.</span>
+      </figcaption>
+      <div class="phone"><div class="app" data-app="light">
+        <div class="scr">
+          <div class="pad">
+            <div class="between">
+              <div class="row gap10" style="min-width:0">
+                <img class="logo44" src="xattica-logo.jpg" alt="">
+                <div class="col" style="min-width:0">
+                  <span class="f15 blk ell" style="letter-spacing:.4px">XATTICA GAMING</span>
+                  <span class="f95 b ell" style="color:var(--red); letter-spacing:.3px">CURRENTLY CLOSED</span>
+                </div>
+              </div>
+              <div class="row" style="gap:2px">
+                <span class="pill red"><span class="dot" style="width:5px;height:5px;background:var(--red)"></span>CLOSED</span>
+                <span class="material-icons" style="font-size:20px;color:var(--red);padding:7px">location_on</span>
+                <span class="material-icons" style="font-size:20px;color:var(--tp);padding:7px">more_vert</span>
+              </div>
+            </div>
+
+            <div class="sp12"></div>
+            <div class="switcher">
+              <div class="b1 on">📍 Kollam 🔔</div>
+              <div class="b1">Kottayam</div>
+              <div class="b1">Cochin</div>
+            </div>
+            <div class="sp6"></div>
+            <div class="row r8" style="background:var(--greensoft); border:1px solid var(--greenborder); padding:5px 8px; gap:5px">
+              <span class="f11">🔔</span>
+              <span class="f10 b ell" style="color:var(--green)">Nearest Store: Kollam • Open/Close &amp; Full alerts active</span>
+            </div>
+
+            <div class="sp10"></div>
+            <div class="between r10" style="background:var(--surface); border:1px solid var(--cardborder); padding:7px 10px">
+              <div class="row gap6" style="min-width:0">
+                <span class="material-icons" style="font-size:13px;color:var(--red)">calendar_today</span>
+                <span class="f11 b ell">Wednesday, 23 September 2026</span>
+              </div>
+              <span class="f10 blk mut ls8">KOLLAM</span>
+            </div>
+
+            <div class="sp10"></div>
+            <div class="between r12" style="background:var(--surface); border:1px solid var(--cardborder); padding:8px 10px">
+              <div class="row gap8" style="min-width:0">
+                <div class="circ" style="width:28px;height:28px;background:var(--redsoft)"><span class="material-icons" style="font-size:14px;color:var(--red)">phone</span></div>
+                <div class="col" style="min-width:0">
+                  <span class="f12 b">📍 Kollam</span>
+                  <span class="f105 med sec">+91 9961123434</span>
+                </div>
+              </div>
+              <div class="row gap6"><span class="btn chip">Call</span><span class="btn wa">WhatsApp</span></div>
+            </div>
+
+            <div class="sp14"></div>
+            <div class="card r16" style="border:1.5px solid rgba(217,35,45,.5); padding:20px; text-align:center">
+              <div class="circ" style="width:52px;height:52px;background:var(--redsoft);margin:0 auto"><span class="material-icons" style="font-size:28px;color:var(--red)">block</span></div>
+              <div class="sp12"></div>
+              <div class="f17 blk ls8" style="color:var(--red)">KOLLAM BRANCH IS CLOSED</div>
+              <div class="sp4"></div>
+              <div class="f12 sec">Gaming systems are currently on standby.</div>
+              <div class="sp14"></div>
+              <div class="r12 p12" style="background:var(--chipbg); border:1px solid var(--cardborder)">
+                <div class="row gap6" style="justify-content:center">
+                  <span class="material-icons" style="font-size:16px;color:var(--amber)">access_time</span>
+                  <span class="f10 b ls" style="color:var(--amber)">NEXT SCHEDULED OPENING</span>
+                </div>
+                <div class="sp4"></div>
+                <div class="f15 blk">Doors Open Tomorrow at 10:00 AM</div>
+                <div class="sp8"></div>
+                <span class="f12 b" style="display:inline-block; background:var(--ambersoft); border:1px solid var(--amberborder); color:var(--amber); border-radius:8px; padding:5px 12px">⏳ Opens in: 11h 24m</span>
+              </div>
+              <div class="sp14"></div>
+              <span class="btn wa full"><span class="material-icons" style="font-size:16px">chat</span>Reserve Slot in Advance via WhatsApp</span>
+            </div>
+            <div class="sp24"></div>
+          </div>
+        </div>
+        <nav class="nav">
+          <div class="it on"><div class="ic"><span class="material-icons">grid_view</span></div><span class="lb">Gaming Zone</span></div>
+          <div class="it"><div class="ic"><span class="material-icons">shopping_cart</span></div><span class="lb">PC Store</span></div>
+          <div class="it"><div class="ic"><span class="material-icons">auto_awesome</span></div><span class="lb">Stories</span></div>
+          <div class="it"><div class="ic"><span class="material-icons">feed</span></div><span class="lb">Tech News</span></div>
+        </nav>
+      </div></div>
+    </figure>
+
+    <!-- COCHIN FLOOR -->
+    <figure class="fr">
+      <figcaption>
+        <span class="cap-n">Cochin floor plan</span>
+        <span class="cap-d">A different branch, a different layout: five PCs, two racing sims, a PS5 and PC 6.</span>
+        <span class="cap-f">Each branch has its own hand-written floor map file, so a new rig needs an app update.</span>
+      </figcaption>
+      <div class="phone"><div class="app" data-app="light">
+        <div class="scr">
+          <div class="pad">
+            <div class="between">
+              <div class="row gap10" style="min-width:0">
+                <img class="logo44" src="xattica-logo.jpg" alt="">
+                <div class="col" style="min-width:0">
+                  <span class="f15 blk ell" style="letter-spacing:.4px">XATTICA GAMING</span>
+                  <span class="f95 b ell" style="color:var(--green); letter-spacing:.3px">LIVE • COCHIN</span>
+                </div>
+              </div>
+              <div class="row" style="gap:2px">
+                <span class="pill green"><span class="dot" style="width:5px;height:5px;background:var(--green)"></span>OPEN</span>
+                <span class="material-icons" style="font-size:20px;color:var(--red);padding:7px">location_on</span>
+                <span class="material-icons" style="font-size:20px;color:var(--tp);padding:7px">more_vert</span>
+              </div>
+            </div>
+            <div class="sp12"></div>
+            <div class="switcher">
+              <div class="b1">Kollam 🔔</div>
+              <div class="b1">Kottayam</div>
+              <div class="b1 on">📍 Cochin</div>
+            </div>
+            <div class="sp6"></div>
+            <div class="between r8" style="background:var(--chipbg); border:1px solid var(--cardborder); padding:6px 8px">
+              <div class="row gap4" style="min-width:0"><span class="f11">🔔</span><span class="f10 b ell">Alerts: Kollam. Tap for Cochin!</span></div>
+              <span class="f105 b" style="color:var(--red); white-space:nowrap">Set Nearest</span>
+            </div>
+
+            <div class="sp10"></div>
+            <div class="between r10" style="background:var(--surface); border:1px solid var(--cardborder); padding:7px 10px">
+              <div class="row gap6" style="min-width:0">
+                <span class="material-icons" style="font-size:13px;color:var(--red)">calendar_today</span>
+                <span class="f11 b ell">Wednesday, 23 September 2026</span>
+              </div>
+              <span class="f10 blk mut ls8">COCHIN</span>
+            </div>
+            <div class="sp10"></div>
+            <div class="between r12" style="background:var(--surface); border:1px solid var(--cardborder); padding:8px 10px">
+              <div class="row gap8" style="min-width:0">
+                <div class="circ" style="width:28px;height:28px;background:var(--redsoft)"><span class="material-icons" style="font-size:14px;color:var(--red)">phone</span></div>
+                <div class="col" style="min-width:0">
+                  <span class="f12 b">📍 Cochin</span>
+                  <span class="f105 med sec">+91 9961300800</span>
+                </div>
+              </div>
+              <div class="row gap6"><span class="btn chip">Call</span><span class="btn wa">WhatsApp</span></div>
+            </div>
+
+            <div class="sp14"></div>
+            <div class="card p14">
+              <div class="between">
+                <span class="f105 b mut ell" style="letter-spacing:.6px">LIVE OCCUPANCY STATUS</span>
+                <span class="pill green" style="font-size:10.5px">6/9 Free</span>
+              </div>
+              <div class="sp10"></div>
+              <div class="between">
+                <div class="row gap4"><span class="dot" style="background:var(--green)"></span><span class="f115 med">6 Available</span></div>
+                <div class="row gap4"><span class="dot" style="background:var(--red)"></span><span class="f115 med">3 In Use</span></div>
+                <div class="row gap4"><span class="dot" style="background:var(--amber)"></span><span class="f115 med">0 Reserved</span></div>
+              </div>
+            </div>
+
+            <div class="sp14"></div>
+            <div class="card p10">
+              <div class="between">
+                <span class="f115 blk ell ls" style="color:var(--red)">📍 COCHIN FLOOR PLAN</span>
+                <span style="background:var(--greensoft); border:.8px solid var(--greenborder); color:var(--green); border-radius:6px; padding:2.5px 6px; font-size:9.5px; font-weight:700; white-space:nowrap">TAP TO VIEW SPECS</span>
+              </div>
+              <div class="sp12"></div>
+              <div class="f105 b sec">TOP BATTLE RIGS (PC 1 - PC 5) • ₹100/HR</div>
+              <div class="sp6"></div>
+              <div class="grid3">
+                <div class="stn ok">
+                  <div class="hd"><div class="row gap4" style="min-width:0"><div class="ti" style="background:rgba(0,229,255,.2)"><span class="material-icons" style="color:var(--neoncyan)">laptop</span></div><span class="code">PC 1</span></div><span class="rate">₹100/hr</span></div>
+                  <div class="sp4"></div><div class="spec">RTX 4060 Ti • Core i5</div><div class="sp4"></div>
+                  <div class="badge ok"><span class="d" style="background:var(--green)"></span>AVAILABLE</div>
+                </div>
+                <div class="stn busy">
+                  <div class="hd"><div class="row gap4" style="min-width:0"><div class="ti" style="background:rgba(0,229,255,.2)"><span class="material-icons" style="color:var(--neoncyan)">laptop</span></div><span class="code">PC 2</span></div><span class="rate">₹100/hr</span></div>
+                  <div class="sp4"></div><div class="game">🎮 FIFA 24</div><div class="sp4"></div>
+                  <div class="badge busy"><span class="d" style="background:var(--red)"></span>22m left</div>
+                </div>
+                <div class="stn ok">
+                  <div class="hd"><div class="row gap4" style="min-width:0"><div class="ti" style="background:rgba(0,229,255,.2)"><span class="material-icons" style="color:var(--neoncyan)">laptop</span></div><span class="code">PC 3</span></div><span class="rate">₹100/hr</span></div>
+                  <div class="sp4"></div><div class="spec">RTX 4060 Ti • Core i5</div><div class="sp4"></div>
+                  <div class="badge ok"><span class="d" style="background:var(--green)"></span>AVAILABLE</div>
+                </div>
+              </div>
+              <div class="sp6"></div>
+              <div class="grid2">
+                <div class="stn ok">
+                  <div class="hd"><div class="row gap4" style="min-width:0"><div class="ti" style="background:rgba(0,229,255,.2)"><span class="material-icons" style="color:var(--neoncyan)">laptop</span></div><span class="code">PC 4</span></div><span class="rate">₹100/hr</span></div>
+                  <div class="sp4"></div><div class="spec">RTX 4060 Ti • Core i5</div><div class="sp4"></div>
+                  <div class="badge ok"><span class="d" style="background:var(--green)"></span>AVAILABLE</div>
+                </div>
+                <div class="stn busy">
+                  <div class="hd"><div class="row gap4" style="min-width:0"><div class="ti" style="background:rgba(0,229,255,.2)"><span class="material-icons" style="color:var(--neoncyan)">laptop</span></div><span class="code">PC 5</span></div><span class="rate">₹100/hr</span></div>
+                  <div class="sp4"></div><div class="game">🎮 CS2</div><div class="sp4"></div>
+                  <div class="badge busy"><span class="d" style="background:var(--red)"></span>47m left</div>
+                </div>
+              </div>
+
+              <div class="sp16"></div>
+              <div class="aisle">••• CENTER AISLE •••</div>
+              <div class="sp16"></div>
+
+              <div class="f11 b sec">SIMULATORS • PS5 CONSOLE • PC 6</div>
+              <div class="sp8"></div>
+              <div class="grid2" style="gap:8px">
+                <div class="stn ok">
+                  <div class="hd"><div class="row gap4" style="min-width:0"><div class="ti" style="background:rgba(124,58,237,.2)"><span class="material-icons" style="color:var(--neonpurple)">directions_car</span></div><span class="code">SIM 1</span></div><span class="rate">₹300/hr (TT Sim)</span></div>
+                  <div class="sp4"></div><div class="spec">Thermaltake Racing Cockpit</div><div class="sp4"></div>
+                  <div class="badge ok"><span class="d" style="background:var(--green)"></span>AVAILABLE</div>
+                </div>
+                <div class="stn ok">
+                  <div class="hd"><div class="row gap4" style="min-width:0"><div class="ti" style="background:rgba(124,58,237,.2)"><span class="material-icons" style="color:var(--neonpurple)">directions_car</span></div><span class="code">SIM 2</span></div><span class="rate">₹250/hr (Logi Sim)</span></div>
+                  <div class="sp4"></div><div class="spec">Logitech G29 Direct Drive</div><div class="sp4"></div>
+                  <div class="badge ok"><span class="d" style="background:var(--green)"></span>AVAILABLE</div>
+                </div>
+              </div>
+              <div class="sp8"></div>
+              <div class="grid2" style="gap:8px">
+                <div class="stn busy">
+                  <div class="hd"><div class="row gap4" style="min-width:0"><div class="ti" style="background:rgba(244,63,94,.2)"><span class="material-icons" style="color:var(--neonpink)">sports_esports</span></div><span class="code">PS5</span></div><span class="rate">₹350/hr (PS5)</span></div>
+                  <div class="sp4"></div><div class="game">🎮 EA FC 25</div><div class="sp4"></div>
+                  <div class="badge busy"><span class="d" style="background:var(--red)"></span>1h 12m left left</div>
+                </div>
+                <div class="stn ok">
+                  <div class="hd"><div class="row gap4" style="min-width:0"><div class="ti" style="background:rgba(0,229,255,.2)"><span class="material-icons" style="color:var(--neoncyan)">laptop</span></div><span class="code">PC 6</span></div><span class="rate">₹100/hr</span></div>
+                  <div class="sp4"></div><div class="spec">RTX 4060 Ti • Core i5</div><div class="sp4"></div>
+                  <div class="badge ok"><span class="d" style="background:var(--green)"></span>AVAILABLE</div>
+                </div>
+              </div>
+            </div>
+            <div class="sp24"></div>
+          </div>
+        </div>
+        <nav class="nav">
+          <div class="it on"><div class="ic"><span class="material-icons">grid_view</span></div><span class="lb">Gaming Zone</span></div>
+          <div class="it"><div class="ic"><span class="material-icons">shopping_cart</span></div><span class="lb">PC Store</span></div>
+          <div class="it"><div class="ic"><span class="material-icons">auto_awesome</span></div><span class="lb">Stories</span></div>
+          <div class="it"><div class="ic"><span class="material-icons">feed</span></div><span class="lb">Tech News</span></div>
+        </nav>
+      </div></div>
+    </figure>
+
+    <!-- STATION SHEET -->
+    <figure class="fr">
+      <figcaption>
+        <span class="cap-n">Tapping a station</span>
+        <span class="cap-d">The detail sheet that slides up over the floor.</span>
+        <span class="cap-f">"Notify Me When Station Frees" is wired to nothing. No code anywhere sends that alert.</span>
+      </figcaption>
+      <div class="phone"><div class="app" data-app="light">
+        <div class="scr">
+          <div class="pad" style="opacity:.3">
+            <div class="between">
+              <div class="row gap10"><img class="logo44" src="xattica-logo.jpg" alt=""><div class="col"><span class="f15 blk">XATTICA GAMING</span><span class="f95 b" style="color:var(--green)">LIVE • KOLLAM</span></div></div>
+            </div>
+            <div class="sp12"></div>
+            <div class="card p14" style="height:120px"></div>
+            <div class="sp14"></div>
+            <div class="card p14" style="height:200px"></div>
+          </div>
+          <div class="ovl bottom">
+            <div class="sheet">
+              <div class="drag"></div>
+              <div class="between">
+                <div class="row gap10">
+                  <div class="circ" style="width:38px;height:38px;background:var(--cyansoft)"><span class="material-icons" style="font-size:20px;color:var(--cyan)">laptop</span></div>
+                  <div class="col">
+                    <span class="f18 blk">PC 2 • Kollam</span>
+                    <span class="f12 sec">Battle Rig 2</span>
+                  </div>
+                </div>
+                <span class="material-icons mut" style="font-size:22px">close</span>
+              </div>
+
+              <div class="sp14"></div>
+              <div class="card r12 p12">
+                <div class="between">
+                  <span class="f10 b mut ls8">HOURLY GAMING RATE</span>
+                  <span style="background:var(--greensoft); border:1px solid var(--greenborder); color:var(--green); border-radius:6px; padding:3px 8px; font-size:11px; font-weight:700">Current Rate: ₹90/hr</span>
+                </div>
+                <div class="sp6"></div>
+                <div class="f11 sec" style="line-height:16px">• 10:00 AM – 6:00 PM: ₹90 / hr (Day Happy Hours)<br>• 6:00 PM – 8:00 PM: ₹100 / hr (Evening Prime)</div>
+                <div class="sp8"></div>
+                <div class="r8" style="background:var(--greensoft); padding:4px 8px">
+                  <span class="f11 med" style="color:var(--green)">🎁 1-Hr Sessions include a 10-Min Free Grace Buffer (extra 30m fee calculates after 70 mins)</span>
+                </div>
+              </div>
+
+              <div class="sp12"></div>
+              <div class="r12 p12" style="background:var(--cardbg); border:1px solid var(--cardborder)">
+                <div class="between">
+                  <span class="f10 b mut ls8">STATUS &amp; TIMERS</span>
+                  <span class="badge busy" style="padding:3px 5px"><span class="d" style="background:var(--red)"></span>38m 12s left left</span>
+                </div>
+                <div class="sp6"></div>
+                <div class="f14 b">Free at FREE @ 5:42 PM (38m 12s left)</div>
+              </div>
+
+              <div class="sp12"></div>
+              <div class="f10 b mut ls8">HARDWARE SPECIFICATIONS</div>
+              <div class="sp4"></div>
+              <div class="r8 p10" style="background:var(--chipbg); border:1px solid var(--cardborder)">
+                <span class="f12" style="color:var(--chiptext)">RTX 5060</span>
+              </div>
+
+              <div class="sp8"></div>
+              <div class="row gap6 r8 p10" style="background:var(--chipbg); border:1px solid var(--cardborder)">
+                <span class="material-icons" style="font-size:16px;color:var(--cyan)">speed</span>
+                <span class="f12 med">Current Game: Valorant</span>
+              </div>
+
+              <div class="sp14"></div>
+              <div class="card r12 p12">
+                <div class="between">
+                  <div class="row gap10">
+                    <div class="circ" style="width:34px;height:34px;background:var(--redsoft)"><span class="material-icons" style="font-size:17px;color:var(--red)">phone</span></div>
+                    <div class="col">
+                      <span class="f9 b mut ls">KOLLAM STORE HOTLINE</span>
+                      <span class="f14 blk">+91 9961123434</span>
+                    </div>
+                  </div>
+                  <span class="btn chip" style="font-size:12px; padding:6px 12px">Call</span>
+                </div>
+              </div>
+
+              <div class="sp14"></div>
+              <span class="btn greenfill full"><span class="material-icons" style="font-size:18px">chat</span>💬 WhatsApp Kollam (+91 9961123434)</span>
+              <div class="sp8"></div>
+              <span class="btn chip full"><span class="material-icons" style="font-size:18px;color:var(--ts)">notifications</span>🔔 Notify Me When Station Frees</span>
+            </div>
+          </div>
+        </div>
+      </div></div>
+    </figure>
+
+  </div>
+</section>
+
+<!-- ============================ TAB 2 ============================ -->
+<section class="grp">
+  <h2>Tab 2: PC Store</h2>
+  <p class="sub">Three sub-tabs inside one screen: component deals, laptops in stock, custom builds.</p>
+  <div class="rail">
+
+    <!-- DEALS EMPTY -->
+    <figure class="fr">
+      <figcaption>
+        <span class="cap-n">Component Deals &amp; Spares</span>
+        <span class="cap-d">The tab the Store opens on, as it actually looks right now.</span>
+        <span class="cap-f">Empty, because nothing has ever been published here. Customers land on this first.</span>
+      </figcaption>
+      <div class="phone"><div class="app" data-app="light">
+        <div class="scr">
+          <div class="pad" style="padding:10px 16px 24px">
+            <div class="card r18 p16">
+              <div class="between">
+                <div class="row gap8" style="min-width:0">
+                  <img class="logo36" src="xattica-logo.jpg" alt="">
+                  <div class="col" style="min-width:0">
+                    <span class="f15 blk ell" style="letter-spacing:.6px">XATTICA PC STORE</span>
+                    <span class="b ell" style="font-size:8.5px; color:var(--red); letter-spacing:.4px">SPARES • RIGS • CUSTOM BUILDS</span>
+                  </div>
+                </div>
+                <span class="pill green" style="font-size:11px; padding:5px 8px">💬 Chat</span>
+              </div>
+            </div>
+
+            <div class="sp14"></div>
+            <div class="chips" style="background:var(--surface); border:1px solid var(--cardborder); border-radius:12px; padding:4px; gap:6px">
+              <span class="chip on" style="border-radius:8px; padding:9px 12px; font-size:11.5px">⚡ Component Deals &amp; Spares</span>
+              <span class="chip" style="border:0; background:transparent; color:var(--ts); border-radius:8px; padding:9px 12px; font-size:11.5px; font-weight:700">💻 Laptops in Stock</span>
+              <span class="chip" style="border:0; background:transparent; color:var(--ts); border-radius:8px; padding:9px 12px; font-size:11.5px; font-weight:700">🖥️ Custom Gaming Builds</span>
+            </div>
+
+            <div class="sp14"></div>
+            <div class="row gap8">
+              <span class="f10 blk mut ls" style="white-space:nowrap">SORT BY:</span>
+              <div class="chips">
+                <span class="chip on" style="padding:6px 10px; font-size:11px">🔥 Featured</span>
+                <span class="chip" style="padding:6px 10px; font-size:11px">₹ Price: Low → High</span>
+                <span class="chip" style="padding:6px 10px; font-size:11px">₹ Price: High → Low</span>
+              </div>
+            </div>
+
+            <div class="sp14"></div>
+            <div class="chips">
+              <span class="chip on">All Products</span>
+              <span class="chip">Pre-built Desktops</span>
+              <span class="chip">Processors</span>
+              <span class="chip">RAM</span>
+              <span class="chip">SSD</span>
+              <span class="chip">SMPS</span>
+              <span class="chip">Laptops</span>
+              <span class="chip">GPU</span>
+              <span class="chip">Other Components</span>
+            </div>
+
+            <div class="sp14"></div>
+            <div class="tf"><span class="material-icons" style="font-size:20px">search</span><span class="f12">Search GPU, Ryzen, RAM, SSD...</span></div>
+
+            <div class="sp14"></div>
+            <div class="card r18" style="border:1px solid rgba(0,229,255,.3); background:var(--surface); padding:24px; text-align:center">
+              <div class="circ" style="width:54px;height:54px;background:rgba(0,229,255,.15); border:1px solid rgba(0,229,255,.5); margin:0 auto"><span class="material-icons" style="font-size:26px;color:var(--neoncyan)">shopping_cart</span></div>
+              <div class="sp12"></div>
+              <div class="f16 blk" style="letter-spacing:.6px">PC SPARES &amp; HARDWARE STORE</div>
+              <div class="sp6"></div>
+              <div class="f12 sec" style="line-height:17px">No flash deals listed right now. We stock all Graphics Cards, Processors, RAM, Gen4 SSDs, Power Supplies, Cabinets &amp; Gaming Peripherals. Inquire directly for instant price quotes!</div>
+              <div class="sp16"></div>
+              <span class="btn full" style="background:var(--greenbtn); color:#fff; border-radius:12px; font-weight:900">💬 Inquire PC Spares on WhatsApp</span>
+            </div>
+            <div class="sp24"></div>
+          </div>
+        </div>
+        <nav class="nav">
+          <div class="it"><div class="ic"><span class="material-icons">grid_view</span></div><span class="lb">Gaming Zone</span></div>
+          <div class="it on"><div class="ic"><span class="material-icons">shopping_cart</span></div><span class="lb">PC Store</span></div>
+          <div class="it"><div class="ic"><span class="material-icons">auto_awesome</span></div><span class="lb">Stories</span></div>
+          <div class="it"><div class="ic"><span class="material-icons">feed</span></div><span class="lb">Tech News</span></div>
+        </nav>
+      </div></div>
+    </figure>
+
+    <!-- LAPTOPS -->
+    <figure class="fr">
+      <figcaption>
+        <span class="cap-n">Laptops in Stock</span>
+        <span class="cap-d">The four laptops currently compiled into the app.</span>
+        <span class="cap-f">These four are demo data, shipped inside the app itself. Are these real stock?</span>
+      </figcaption>
+      <div class="phone"><div class="app" data-app="light">
+        <div class="scr">
+          <div class="pad" style="padding:10px 16px 24px">
+            <div class="card r18 p16">
+              <div class="between">
+                <div class="row gap8" style="min-width:0">
+                  <img class="logo36" src="xattica-logo.jpg" alt="">
+                  <div class="col" style="min-width:0">
+                    <span class="f15 blk ell" style="letter-spacing:.6px">XATTICA PC STORE</span>
+                    <span class="b ell" style="font-size:8.5px; color:var(--red); letter-spacing:.4px">SPARES • RIGS • CUSTOM BUILDS</span>
+                  </div>
+                </div>
+                <span class="pill green" style="font-size:11px; padding:5px 8px">💬 Chat</span>
+              </div>
+            </div>
+
+            <div class="sp14"></div>
+            <div class="chips" style="background:var(--surface); border:1px solid var(--cardborder); border-radius:12px; padding:4px; gap:6px">
+              <span class="chip" style="border:0; background:transparent; color:var(--ts); border-radius:8px; padding:9px 12px; font-size:11.5px; font-weight:700">⚡ Component Deals &amp; Spares</span>
+              <span class="chip on" style="border-radius:8px; padding:9px 12px; font-size:11.5px">💻 Laptops in Stock</span>
+              <span class="chip" style="border:0; background:transparent; color:var(--ts); border-radius:8px; padding:9px 12px; font-size:11.5px; font-weight:700">🖥️ Custom Gaming Builds</span>
+            </div>
+
+            <div class="sp14"></div>
+            <div class="tf"><span class="material-icons" style="font-size:20px">search</span><span class="f12">Search brand, RTX 4060, i7, Ryzen, RAM...</span></div>
+
+            <div class="sp14"></div>
+            <div class="between">
+              <span class="r10" style="border:1px solid var(--cardborder); background:var(--surface); padding:7px 12px; display:inline-flex; align-items:center; gap:6px">
+                <span class="material-icons" style="font-size:16px">tune</span>
+                <span class="f12 b">Filter</span>
+                <span class="material-icons mut" style="font-size:18px">expand_more</span>
+              </span>
+              <span class="f11 med sec">4 of 4 Laptops</span>
+            </div>
+
+            <div class="sp14"></div>
+            <div class="col gap14">
+
+              <div class="card r16 p14">
+                <div class="between">
+                  <div class="row gap6">
+                    <span style="background:var(--cyansoft); border:1px solid var(--chipborder); color:var(--cyan); border-radius:6px; padding:3px 8px; font-size:10px; font-weight:900">ASUS</span>
+                    <span style="background:var(--ambersoft); border:1px solid var(--amberborder); color:var(--amber); border-radius:6px; padding:3px 8px; font-size:10px; font-weight:900">19% OFF</span>
+                  </div>
+                  <div class="row gap4"><span class="dot" style="width:6px;height:6px;background:var(--green)"></span><span class="f10 b" style="color:var(--green)">IN STOCK</span></div>
+                </div>
+                <div class="sp10"></div>
+                <div class="ph" style="height:130px">STOCK PHOTO FROM UNSPLASH</div>
+                <div class="sp10"></div>
+                <div class="f15 b">ASUS TUF Gaming A15</div>
+                <div class="sp8"></div>
+                <div class="r10 p10 col gap6" style="background:var(--chipbg); border:1px solid var(--cardborder)">
+                  <div class="specrow"><span class="k">🧠 Processor</span><span class="v">AMD Ryzen 7 7735HS</span></div>
+                  <div class="specrow"><span class="k">🎮 GPU</span><span class="v">NVIDIA RTX 4060 8GB GDDR6</span></div>
+                  <div class="specrow"><span class="k">⚡ RAM &amp; Storage</span><span class="v">16GB DDR5 4800MHz | 512GB NVMe Gen4 SSD</span></div>
+                  <div class="specrow"><span class="k">🖥️ Display</span><span class="v">15.6" FHD 144Hz IPS</span></div>
+                </div>
+                <div class="sp8"></div>
+                <div class="row gap4"><span class="material-icons mut" style="font-size:13px">security</span><span class="f10 mut">1 Year Brand Onsite Warranty</span></div>
+                <div class="sp8"></div>
+                <div class="between">
+                  <div class="col">
+                    <div class="row gap6"><span class="f18 blk" style="color:var(--red)">₹84,990</span><span class="strike">₹1,04,990</span></div>
+                    <span class="f10 b" style="color:var(--green)">Save ₹20,000 (19% off)</span>
+                  </div>
+                  <span class="btn redfill" style="border-radius:10px; padding:6px 14px">💬 Buy / Inquire</span>
+                </div>
+              </div>
+
+              <div class="card r16 p14">
+                <div class="between">
+                  <div class="row gap6">
+                    <span style="background:var(--cyansoft); border:1px solid var(--chipborder); color:var(--cyan); border-radius:6px; padding:3px 8px; font-size:10px; font-weight:900">LENOVO</span>
+                    <span style="background:var(--ambersoft); border:1px solid var(--amberborder); color:var(--amber); border-radius:6px; padding:3px 8px; font-size:10px; font-weight:900">16% OFF</span>
+                  </div>
+                  <div class="row gap4"><span class="dot" style="width:6px;height:6px;background:var(--green)"></span><span class="f10 b" style="color:var(--green)">IN STOCK</span></div>
+                </div>
+                <div class="sp10"></div>
+                <div class="ph" style="height:130px">STOCK PHOTO FROM UNSPLASH</div>
+                <div class="sp10"></div>
+                <div class="f15 b">Lenovo Legion Pro 5 Gen 8</div>
+                <div class="sp8"></div>
+                <div class="r10 p10 col gap6" style="background:var(--chipbg); border:1px solid var(--cardborder)">
+                  <div class="specrow"><span class="k">🧠 Processor</span><span class="v">Intel Core i7-13700HX</span></div>
+                  <div class="specrow"><span class="k">🎮 GPU</span><span class="v">NVIDIA RTX 4070 8GB GDDR6</span></div>
+                  <div class="specrow"><span class="k">⚡ RAM &amp; Storage</span><span class="v">16GB DDR5 5200MHz | 1TB NVMe Gen4 SSD</span></div>
+                  <div class="specrow"><span class="k">🖥️ Display</span><span class="v">16" WQXGA 240Hz 500 nits</span></div>
+                </div>
+                <div class="sp8"></div>
+                <div class="row gap4"><span class="material-icons mut" style="font-size:13px">security</span><span class="f10 mut">2 Years Onsite + 1 Year ADP</span></div>
+                <div class="sp8"></div>
+                <div class="between">
+                  <div class="col">
+                    <div class="row gap6"><span class="f18 blk" style="color:var(--red)">₹1,29,990</span><span class="strike">₹1,54,990</span></div>
+                    <span class="f10 b" style="color:var(--green)">Save ₹25,000 (16% off)</span>
+                  </div>
+                  <span class="btn redfill" style="border-radius:10px; padding:6px 14px">💬 Buy / Inquire</span>
+                </div>
+              </div>
+
+              <div class="card r16 p14">
+                <div class="between">
+                  <div class="row gap6">
+                    <span style="background:var(--cyansoft); border:1px solid var(--chipborder); color:var(--cyan); border-radius:6px; padding:3px 8px; font-size:10px; font-weight:900">ACER</span>
+                    <span style="background:var(--ambersoft); border:1px solid var(--amberborder); color:var(--amber); border-radius:6px; padding:3px 8px; font-size:10px; font-weight:900">16% OFF</span>
+                  </div>
+                  <div class="row gap4"><span class="dot" style="width:6px;height:6px;background:var(--green)"></span><span class="f10 b" style="color:var(--green)">IN STOCK</span></div>
+                </div>
+                <div class="sp10"></div>
+                <div class="ph" style="height:130px">STOCK PHOTO FROM UNSPLASH</div>
+                <div class="sp10"></div>
+                <div class="f15 b">Acer Nitro V 15</div>
+                <div class="sp8"></div>
+                <div class="r10 p10 col gap6" style="background:var(--chipbg); border:1px solid var(--cardborder)">
+                  <div class="specrow"><span class="k">🧠 Processor</span><span class="v">Intel Core i5-13420H</span></div>
+                  <div class="specrow"><span class="k">🎮 GPU</span><span class="v">NVIDIA RTX 4050 6GB GDDR6</span></div>
+                  <div class="specrow"><span class="k">⚡ RAM &amp; Storage</span><span class="v">16GB DDR5 5200MHz | 512GB Gen4 M.2 SSD</span></div>
+                  <div class="specrow"><span class="k">🖥️ Display</span><span class="v">15.6" FHD 144Hz IPS</span></div>
+                </div>
+                <div class="sp8"></div>
+                <div class="row gap4"><span class="material-icons mut" style="font-size:13px">security</span><span class="f10 mut">1 Year Acer Onsite Warranty</span></div>
+                <div class="sp8"></div>
+                <div class="between">
+                  <div class="col">
+                    <div class="row gap6"><span class="f18 blk" style="color:var(--red)">₹66,990</span><span class="strike">₹79,990</span></div>
+                    <span class="f10 b" style="color:var(--green)">Save ₹13,000 (16% off)</span>
+                  </div>
+                  <span class="btn redfill" style="border-radius:10px; padding:6px 14px">💬 Buy / Inquire</span>
+                </div>
+              </div>
+
+              <div class="card r16 p14">
+                <div class="between">
+                  <div class="row gap6">
+                    <span style="background:var(--cyansoft); border:1px solid var(--chipborder); color:var(--cyan); border-radius:6px; padding:3px 8px; font-size:10px; font-weight:900">HP</span>
+                    <span style="background:var(--ambersoft); border:1px solid var(--amberborder); color:var(--amber); border-radius:6px; padding:3px 8px; font-size:10px; font-weight:900">23% OFF</span>
+                  </div>
+                  <div class="row gap4"><span class="dot" style="width:6px;height:6px;background:var(--green)"></span><span class="f10 b" style="color:var(--green)">IN STOCK</span></div>
+                </div>
+                <div class="sp10"></div>
+                <div class="ph" style="height:130px">STOCK PHOTO FROM UNSPLASH</div>
+                <div class="sp10"></div>
+                <div class="f15 b">HP Victus 15 Gaming</div>
+                <div class="sp8"></div>
+                <div class="r10 p10 col gap6" style="background:var(--chipbg); border:1px solid var(--cardborder)">
+                  <div class="specrow"><span class="k">🧠 Processor</span><span class="v">AMD Ryzen 5 5600H</span></div>
+                  <div class="specrow"><span class="k">🎮 GPU</span><span class="v">NVIDIA RTX 3050 4GB</span></div>
+                  <div class="specrow"><span class="k">⚡ RAM &amp; Storage</span><span class="v">8GB DDR4 (Upgradable) | 512GB PCIe NVMe SSD</span></div>
+                  <div class="specrow"><span class="k">🖥️ Display</span><span class="v">15.6" FHD 144Hz Micro-Edge</span></div>
+                </div>
+                <div class="sp8"></div>
+                <div class="row gap4"><span class="material-icons mut" style="font-size:13px">security</span><span class="f10 mut">1 Year HP Brand Warranty</span></div>
+                <div class="sp8"></div>
+                <div class="between">
+                  <div class="col">
+                    <div class="row gap6"><span class="f18 blk" style="color:var(--red)">₹49,990</span><span class="strike">₹64,990</span></div>
+                    <span class="f10 b" style="color:var(--green)">Save ₹15,000 (23% off)</span>
+                  </div>
+                  <span class="btn redfill" style="border-radius:10px; padding:6px 14px">💬 Buy / Inquire</span>
+                </div>
+              </div>
+
+            </div>
+            <div class="sp24"></div>
+          </div>
+        </div>
+        <nav class="nav">
+          <div class="it"><div class="ic"><span class="material-icons">grid_view</span></div><span class="lb">Gaming Zone</span></div>
+          <div class="it on"><div class="ic"><span class="material-icons">shopping_cart</span></div><span class="lb">PC Store</span></div>
+          <div class="it"><div class="ic"><span class="material-icons">auto_awesome</span></div><span class="lb">Stories</span></div>
+          <div class="it"><div class="ic"><span class="material-icons">feed</span></div><span class="lb">Tech News</span></div>
+        </nav>
+      </div></div>
+    </figure>
+
+    <!-- CUSTOM BUILDS -->
+    <figure class="fr">
+      <figcaption>
+        <span class="cap-n">Custom Gaming Builds</span>
+        <span class="cap-d">The third sub-tab.</span>
+        <span class="cap-f">Permanently empty. There is no screen anywhere in the app for adding a build.</span>
+      </figcaption>
+      <div class="phone"><div class="app" data-app="light">
+        <div class="scr">
+          <div class="pad" style="padding:10px 16px 24px">
+            <div class="card r18 p16">
+              <div class="between">
+                <div class="row gap8" style="min-width:0">
+                  <img class="logo36" src="xattica-logo.jpg" alt="">
+                  <div class="col" style="min-width:0">
+                    <span class="f15 blk ell" style="letter-spacing:.6px">XATTICA PC STORE</span>
+                    <span class="b ell" style="font-size:8.5px; color:var(--red); letter-spacing:.4px">SPARES • RIGS • CUSTOM BUILDS</span>
+                  </div>
+                </div>
+                <span class="pill green" style="font-size:11px; padding:5px 8px">💬 Chat</span>
+              </div>
+            </div>
+            <div class="sp14"></div>
+            <div class="chips" style="background:var(--surface); border:1px solid var(--cardborder); border-radius:12px; padding:4px; gap:6px">
+              <span class="chip" style="border:0; background:transparent; color:var(--ts); border-radius:8px; padding:9px 12px; font-size:11.5px; font-weight:700">⚡ Component Deals &amp; Spares</span>
+              <span class="chip" style="border:0; background:transparent; color:var(--ts); border-radius:8px; padding:9px 12px; font-size:11.5px; font-weight:700">💻 Laptops in Stock</span>
+              <span class="chip on" style="border-radius:8px; padding:9px 12px; font-size:11.5px">🖥️ Custom Gaming Builds</span>
+            </div>
+            <div class="sp14"></div>
+            <div class="row gap8">
+              <span class="f10 blk mut ls" style="white-space:nowrap">SORT BY:</span>
+              <div class="chips">
+                <span class="chip on" style="padding:6px 10px; font-size:11px">🔥 Featured</span>
+                <span class="chip" style="padding:6px 10px; font-size:11px">₹ Price: Low → High</span>
+                <span class="chip" style="padding:6px 10px; font-size:11px">₹ Price: High → Low</span>
+              </div>
+            </div>
+            <div class="sp14"></div>
+            <div class="card r18" style="border:1px solid rgba(0,229,255,.4); padding:20px; text-align:center">
+              <div class="circ" style="width:54px;height:54px;background:rgba(0,229,255,.15); border:1px solid rgba(0,229,255,.5); margin:0 auto"><span class="material-icons" style="font-size:26px;color:var(--neoncyan)">build</span></div>
+              <div class="sp12"></div>
+              <div class="f16 blk" style="letter-spacing:.6px">CUSTOM GAMING PC BUILDS</div>
+              <div class="sp6"></div>
+              <div class="f12 sec" style="line-height:17px">Get a tailored gaming rig built specifically for your budget, preferred resolution (1080p / 1440p / 4K), and games with official warranties and professional cable management.</div>
+              <div class="sp16"></div>
+              <span class="btn full" style="background:var(--greenbtn); color:#fff; border-radius:12px">💬 Request Custom Build on WhatsApp</span>
+            </div>
+            <div class="sp24"></div>
+          </div>
+        </div>
+        <nav class="nav">
+          <div class="it"><div class="ic"><span class="material-icons">grid_view</span></div><span class="lb">Gaming Zone</span></div>
+          <div class="it on"><div class="ic"><span class="material-icons">shopping_cart</span></div><span class="lb">PC Store</span></div>
+          <div class="it"><div class="ic"><span class="material-icons">auto_awesome</span></div><span class="lb">Stories</span></div>
+          <div class="it"><div class="ic"><span class="material-icons">feed</span></div><span class="lb">Tech News</span></div>
+        </nav>
+      </div></div>
+    </figure>
+
+  </div>
+</section>
+
+<!-- ============================ TAB 3 & 4 ============================ -->
+<section class="grp">
+  <h2>Tab 3 and Tab 4: Stories and Tech News</h2>
+  <p class="sub">The two content tabs. Both are filled entirely from data built into the app right now.</p>
+  <div class="rail">
+
+    <!-- STORIES -->
+    <figure class="fr">
+      <figcaption>
+        <span class="cap-n">Customer Stories &amp; Builds</span>
+        <span class="cap-d">Builds you have delivered, one card each, filterable by branch.</span>
+        <span class="cap-f">All three cards are demo data with customer names in them. Rahul K., Akhil V., Mathew S.</span>
+      </figcaption>
+      <div class="phone"><div class="app" data-app="light">
+        <div class="scr">
+          <div class="pad" style="padding:10px 14px 24px">
+            <div class="card r16 p16">
+              <div class="row gap8">
+                <div class="circ" style="width:36px;height:36px;background:rgba(59,130,246,.12)"><span class="material-icons" style="font-size:20px;color:#3B82F6">auto_awesome</span></div>
+                <div class="col">
+                  <span class="f15 blk ls">CUSTOMER STORIES &amp; BUILDS</span>
+                  <span class="f11 sec">Custom PCs built, tuned &amp; delivered by XATTICA</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="sp14"></div>
+            <div class="chips">
+              <span class="chip onblue" style="border-radius:8px">🌐 All Branches</span>
+              <span class="chip">📍 Cochin</span>
+              <span class="chip">📍 Kollam</span>
+              <span class="chip">📍 Kottayam</span>
+            </div>
+            <div class="sp8"></div>
+            <div class="chips">
+              <span class="chip onblue" style="border-radius:8px">All Stories</span>
+              <span class="chip">🖥️ PC Deliveries</span>
+              <span class="chip">🏆 Tournaments &amp; Cups</span>
+            </div>
+
+            <div class="sp14"></div>
+            <div class="col gap14">
+
+              <div class="card r16" style="overflow:hidden">
+                <div class="between" style="padding:10px 14px">
+                  <span style="background:rgba(59,130,246,.1); color:#1D4ED8; border-radius:6px; padding:4px 8px; font-size:10px; font-weight:700">📍 XATTICA COCHIN</span>
+                  <span class="f10 med mut">Sep 22, 2026</span>
+                </div>
+                <div class="ph" style="height:200px; border-radius:0; border-left:0; border-right:0">BROKEN IMAGE — THIS URL RETURNS 404</div>
+                <div class="p14 col gap8">
+                  <span style="align-self:flex-start; background:rgba(59,130,246,.12); border:1px solid rgba(59,130,246,.35); color:#1D4ED8; border-radius:6px; padding:4px 8px; font-size:11px; font-weight:900">🎉 DELIVERED: RAHUL K.</span>
+                  <span class="f14 b">🖥️ Custom RTX 4080 Super Beast Delivered • Cochin</span>
+                  <span class="f12 sec" style="line-height:17px">Ryzen 7 7800X3D • ROG Strix B650E • 32GB DDR5 6000MHz • RTX 4080 Super 16GB • 2TB 990 Pro • Lian Li O11 Vision Chrome. Built and tuned for Rahul K. 4K Esports ready.</span>
+                  <div class="row gap8">
+                    <span style="background:rgba(5,150,105,.12); color:var(--green); border-radius:6px; padding:4px 8px; font-size:11px; font-weight:900">💰 Budget: ₹2,25,000</span>
+                  </div>
+                  <div class="sp4"></div>
+                  <div class="row gap8">
+                    <span class="btn greenfill" style="flex:1; padding:8px 10px">💬 Inquire About Build</span>
+                    <span class="btn chip" style="width:44px; padding:8px 0"><span class="material-icons" style="font-size:16px">share</span></span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="card r16" style="overflow:hidden">
+                <div class="between" style="padding:10px 14px">
+                  <span style="background:rgba(59,130,246,.1); color:#1D4ED8; border-radius:6px; padding:4px 8px; font-size:10px; font-weight:700">📍 XATTICA KOLLAM</span>
+                  <span class="f10 med mut">Sep 21, 2026</span>
+                </div>
+                <div class="ph" style="height:200px; border-radius:0; border-left:0; border-right:0">STOCK PHOTO FROM UNSPLASH</div>
+                <div class="p14 col gap8">
+                  <span style="align-self:flex-start; background:rgba(59,130,246,.12); border:1px solid rgba(59,130,246,.35); color:#1D4ED8; border-radius:6px; padding:4px 8px; font-size:11px; font-weight:900">🎉 DELIVERED: AKHIL V.</span>
+                  <span class="f14 b">🖥️ White Aesthetic RTX 4070 Ti Super Rig • Kollam</span>
+                  <span class="f12 sec" style="line-height:17px">Intel Core i7-14700K • Corsair Dominator Titanium White 32GB • RTX 4070 Ti Super Aero • NZXT Kraken Elite 360 RGB • H6 Flow RGB. Built for Akhil V.</span>
+                  <div class="row gap8">
+                    <span style="background:rgba(5,150,105,.12); color:var(--green); border-radius:6px; padding:4px 8px; font-size:11px; font-weight:900">💰 Budget: ₹1,85,000</span>
+                  </div>
+                  <div class="sp4"></div>
+                  <div class="row gap8">
+                    <span class="btn greenfill" style="flex:1; padding:8px 10px">💬 Inquire About Build</span>
+                    <span class="btn chip" style="width:44px; padding:8px 0"><span class="material-icons" style="font-size:16px">share</span></span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="card r16" style="overflow:hidden">
+                <div class="between" style="padding:10px 14px">
+                  <span style="background:rgba(59,130,246,.1); color:#1D4ED8; border-radius:6px; padding:4px 8px; font-size:10px; font-weight:700">📍 XATTICA KOTTAYAM</span>
+                  <span class="f10 med mut">Sep 20, 2026</span>
+                </div>
+                <div class="ph" style="height:200px; border-radius:0; border-left:0; border-right:0">STOCK PHOTO FROM UNSPLASH</div>
+                <div class="p14 col gap8">
+                  <span style="align-self:flex-start; background:rgba(59,130,246,.12); border:1px solid rgba(59,130,246,.35); color:#1D4ED8; border-radius:6px; padding:4px 8px; font-size:11px; font-weight:900">🎉 DELIVERED: MATHEW S.</span>
+                  <span class="f14 b">🖥️ Esports Competitive Rig (Core i5 + RTX 4060 Ti) • Kottayam</span>
+                  <span class="f12 sec" style="line-height:17px">Intel Core i5-14400F • 32GB Kingston Fury 6000MHz • RTX 4060 Ti 16GB • 1TB NVMe • Ant Esports ICE-511MT. Delivered to Mathew S. Tested 400+ FPS on Valorant.</span>
+                  <div class="row gap8">
+                    <span style="background:rgba(5,150,105,.12); color:var(--green); border-radius:6px; padding:4px 8px; font-size:11px; font-weight:900">💰 Budget: ₹95,000</span>
+                  </div>
+                  <div class="sp4"></div>
+                  <div class="row gap8">
+                    <span class="btn greenfill" style="flex:1; padding:8px 10px">💬 Inquire About Build</span>
+                    <span class="btn chip" style="width:44px; padding:8px 0"><span class="material-icons" style="font-size:16px">share</span></span>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+            <div class="sp24"></div>
+          </div>
+        </div>
+        <nav class="nav">
+          <div class="it"><div class="ic"><span class="material-icons">grid_view</span></div><span class="lb">Gaming Zone</span></div>
+          <div class="it"><div class="ic"><span class="material-icons">shopping_cart</span></div><span class="lb">PC Store</span></div>
+          <div class="it on"><div class="ic"><span class="material-icons">auto_awesome</span></div><span class="lb">Stories</span></div>
+          <div class="it"><div class="ic"><span class="material-icons">feed</span></div><span class="lb">Tech News</span></div>
+        </nav>
+      </div></div>
+    </figure>
+
+    <!-- TECH NEWS -->
+    <figure class="fr">
+      <figcaption>
+        <span class="cap-n">Tech News &amp; Pulse</span>
+        <span class="cap-d">Hardware headlines, with a push notification every morning at 7:00 AM.</span>
+        <span class="cap-f">These three articles are built into the app and their links look made up.</span>
+      </figcaption>
+      <div class="phone"><div class="app" data-app="light">
+        <div class="scr">
+          <div class="pad" style="padding:16px 16px 24px">
+            <div class="card r18 p16" style="padding:18px">
+              <div class="between">
+                <div class="row gap10">
+                  <div class="circ" style="width:40px;height:40px;background:var(--redsoft)"><span class="material-icons" style="font-size:22px;color:var(--red)">article</span></div>
+                  <div class="col">
+                    <span class="f17 blk ls8">TECH NEWS &amp; PULSE</span>
+                    <span class="f12 sec">Hardware, Gaming &amp; Esports</span>
+                  </div>
+                </div>
+                <div class="circ" style="width:36px;height:36px;background:var(--cardbg)"><span class="material-icons" style="font-size:18px">refresh</span></div>
+              </div>
+              <div class="sp12"></div>
+              <div class="between">
+                <span class="r8 f10 b" style="background:var(--redsoft); color:var(--red); padding:4px 8px">UPDATED DAILY AT 7:00 AM</span>
+                <span class="f12 med mut">3 Articles</span>
+              </div>
+            </div>
+
+            <div class="sp16"></div>
+            <div class="col gap16">
+
+              <div class="card r18" style="overflow:hidden">
+                <div style="position:relative">
+                  <div class="ph" style="height:180px; border-radius:0; border:0">STOCK PHOTO FROM UNSPLASH</div>
+                  <div style="position:absolute; left:12px; bottom:12px; background:rgba(0,0,0,.75); border-radius:8px; padding:4px 8px; display:flex; align-items:center; gap:4px">
+                    <span class="material-icons" style="font-size:13px;color:var(--cyan)">language</span>
+                    <span style="color:#fff; font-size:11px; font-weight:700">tomshardware.com</span>
+                  </div>
+                </div>
+                <div class="p16">
+                  <div class="f16 b" style="line-height:22px">NVIDIA GeForce RTX 50-Series Blackwell Architecture &amp; GDDR7 Memory Detailed</div>
+                  <div class="sp8"></div>
+                  <div class="f13 sec" style="line-height:18px">Next-gen Blackwell GPUs promise revolutionary ray tracing enhancements, DLSS 4 frame generation, and up to 32 Gbps GDDR7 memory speeds.</div>
+                  <div class="sp14"></div>
+                  <div class="between">
+                    <div class="row gap4"><span class="material-icons mut" style="font-size:13px">schedule</span><span class="f11 mut">2 hours ago</span></div>
+                    <span class="btn redfill" style="border-radius:10px; padding:6px 14px; font-size:12px">Read Story <span class="material-icons" style="font-size:13px">open_in_new</span></span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="card r18" style="overflow:hidden">
+                <div style="position:relative">
+                  <div class="ph" style="height:180px; border-radius:0; border:0">STOCK PHOTO FROM UNSPLASH</div>
+                  <div style="position:absolute; left:12px; bottom:12px; background:rgba(0,0,0,.75); border-radius:8px; padding:4px 8px; display:flex; align-items:center; gap:4px">
+                    <span class="material-icons" style="font-size:13px;color:var(--cyan)">language</span>
+                    <span style="color:#fff; font-size:11px; font-weight:700">anandtech.com</span>
+                  </div>
+                </div>
+                <div class="p16">
+                  <div class="f16 b" style="line-height:22px">AMD Ryzen 9000X3D Processors: 2nd Gen 3D V-Cache Unleashed for Esports Gaming</div>
+                  <div class="sp8"></div>
+                  <div class="f13 sec" style="line-height:18px">AMD reveals full specifications for Ryzen 7 9800X3D with improved thermals, overclocking support, and unmatched 1% low FPS in competitive titles.</div>
+                  <div class="sp14"></div>
+                  <div class="between">
+                    <div class="row gap4"><span class="material-icons mut" style="font-size:13px">schedule</span><span class="f11 mut">7 hours ago</span></div>
+                    <span class="btn redfill" style="border-radius:10px; padding:6px 14px; font-size:12px">Read Story <span class="material-icons" style="font-size:13px">open_in_new</span></span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="card r18" style="overflow:hidden">
+                <div style="position:relative">
+                  <div class="ph" style="height:180px; border-radius:0; border:0">STOCK PHOTO FROM UNSPLASH</div>
+                  <div style="position:absolute; left:12px; bottom:12px; background:rgba(0,0,0,.75); border-radius:8px; padding:4px 8px; display:flex; align-items:center; gap:4px">
+                    <span class="material-icons" style="font-size:13px;color:var(--cyan)">language</span>
+                    <span style="color:#fff; font-size:11px; font-weight:700">theverge.com</span>
+                  </div>
+                </div>
+                <div class="p16">
+                  <div class="f16 b" style="line-height:22px">Unreal Engine 5.5 Ships with Megalights &amp; MegaAssemblies: Next-Gen PC Benchmarks</div>
+                  <div class="sp8"></div>
+                  <div class="f13 sec" style="line-height:18px">Epic Games launches Unreal Engine 5.5 introducing real-time movable lights with no performance penalty and significant CPU stutter reduction on PC.</div>
+                  <div class="sp14"></div>
+                  <div class="between">
+                    <div class="row gap4"><span class="material-icons mut" style="font-size:13px">schedule</span><span class="f11 mut">20 hours ago</span></div>
+                    <span class="btn redfill" style="border-radius:10px; padding:6px 14px; font-size:12px">Read Story <span class="material-icons" style="font-size:13px">open_in_new</span></span>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+            <div class="sp24"></div>
+          </div>
+        </div>
+        <nav class="nav">
+          <div class="it"><div class="ic"><span class="material-icons">grid_view</span></div><span class="lb">Gaming Zone</span></div>
+          <div class="it"><div class="ic"><span class="material-icons">shopping_cart</span></div><span class="lb">PC Store</span></div>
+          <div class="it"><div class="ic"><span class="material-icons">auto_awesome</span></div><span class="lb">Stories</span></div>
+          <div class="it on"><div class="ic"><span class="material-icons">feed</span></div><span class="lb">Tech News</span></div>
+        </nav>
+      </div></div>
+    </figure>
+
+  </div>
+</section>
+
+<!-- ============================ STAFF ============================ -->
+<section class="grp">
+  <h2>The staff side</h2>
+  <p class="sub">Hidden behind a double tap on the logo. Customers never see these, but this is where the shop actually runs.</p>
+  <div class="rail">
+
+    <!-- LOGIN -->
+    <figure class="fr">
+      <figcaption>
+        <span class="cap-n">Admin login</span>
+        <span class="cap-d">Reached by double tapping the XATTICA logo on the floor screen.</span>
+        <span class="cap-f">Every password is written in plain text inside the app file. All four must be changed.</span>
+      </figcaption>
+      <div class="phone"><div class="app" data-app="light">
+        <div class="scr">
+          <div class="pad" style="opacity:.3">
+            <div class="row gap10"><img class="logo44" src="xattica-logo.jpg" alt=""><div class="col"><span class="f15 blk">XATTICA GAMING</span><span class="f95 b" style="color:var(--green)">LIVE • KOLLAM</span></div></div>
+            <div class="sp12"></div>
+            <div class="card p14" style="height:100px"></div>
+            <div class="sp14"></div>
+            <div class="card p14" style="height:240px"></div>
+          </div>
+          <div class="ovl center">
+            <div class="dlg">
+              <div class="between">
+                <div class="row gap10">
+                  <div class="circ" style="width:38px;height:38px;background:var(--redsoft)"><span class="material-icons" style="font-size:20px;color:var(--red)">lock</span></div>
+                  <div class="col">
+                    <span class="f16 blk ls">ADMIN LOGIN</span>
+                    <span class="f11 mut">Enter credentials to continue</span>
+                  </div>
+                </div>
+                <span class="material-icons mut" style="font-size:22px">close</span>
+              </div>
+              <div class="sp16"></div>
+              <div class="f10 b mut ls">SELECT BRANCH / ACCOUNT</div>
+              <div class="sp6"></div>
+              <div class="row gap6">
+                <span style="flex:1; text-align:center; background:var(--red); color:#fff; border:1px solid var(--red); border-radius:8px; padding:7px 0; font-size:10px; font-weight:900">📍 Kollam</span>
+                <span style="flex:1; text-align:center; background:var(--chipbg); color:var(--tp); border:1px solid var(--cardborder); border-radius:8px; padding:7px 0; font-size:10px; font-weight:700">📍 Kottayam</span>
+                <span style="flex:1; text-align:center; background:var(--chipbg); color:var(--tp); border:1px solid var(--cardborder); border-radius:8px; padding:7px 0; font-size:10px; font-weight:700">📍 Cochin</span>
+                <span style="flex:1; text-align:center; background:var(--chipbg); color:var(--tp); border:1px solid var(--cardborder); border-radius:8px; padding:7px 0; font-size:10px; font-weight:700">🛡️ Admin</span>
+              </div>
+              <div class="sp14"></div>
+              <div class="tf"><span class="material-icons" style="font-size:20px">person</span><span class="f13 pri">kollam</span></div>
+              <div class="sp12"></div>
+              <div class="tf" style="justify-content:space-between">
+                <div class="row gap10"><span class="material-icons" style="font-size:20px">lock</span><span class="f13 pri">••••••••••••••••</span></div>
+                <span class="material-icons" style="font-size:20px">visibility_off</span>
+              </div>
+              <div class="sp8"></div>
+              <div class="row gap8">
+                <span style="width:18px;height:18px;border-radius:3px;background:var(--red);display:inline-flex;align-items:center;justify-content:center"><span class="material-icons" style="font-size:14px;color:#fff">check</span></span>
+                <span class="f12 med sec">Remember username on this device</span>
+              </div>
+              <div class="sp20"></div>
+              <span class="btn redfill full" style="font-size:14px">Sign In</span>
+            </div>
+          </div>
+        </div>
+      </div></div>
+    </figure>
+
+    <!-- ADMIN DASHBOARD -->
+    <figure class="fr">
+      <figcaption>
+        <span class="cap-n">Staff dashboard: Zone &amp; Rigs</span>
+        <span class="cap-d">Five tabs. This is the one counter staff use all day.</span>
+        <span class="cap-f">One file, 3,704 lines, one function. Every change to any of the five tabs risks the other four.</span>
+      </figcaption>
+      <div class="phone"><div class="app" data-app="light">
+        <div class="scr">
+          <div class="pad" style="padding:10px 16px 24px">
+
+            <div class="card r16" style="border:1.5px solid rgba(217,35,45,.4); padding:14px">
+              <div class="between">
+                <div class="row gap8" style="min-width:0">
+                  <div class="circ" style="width:36px;height:36px;background:var(--redsoft)"><span class="material-icons" style="font-size:20px;color:var(--red)">admin_panel_settings</span></div>
+                  <div class="col" style="min-width:0">
+                    <span class="f14 blk ell">XATTICA KOLLAM STAFF</span>
+                    <span class="f10 b" style="color:var(--red)">Control: Kollam Only</span>
+                  </div>
+                </div>
+                <div class="row gap6">
+                  <span class="btn chip" style="padding:6px 8px"><span class="material-icons" style="font-size:13px;color:var(--ts)">grid_view</span>Floor</span>
+                  <span class="btn chip" style="padding:6px 8px"><span class="material-icons" style="font-size:13px;color:var(--ts)">lock</span>Lock</span>
+                </div>
+              </div>
+              <div class="sp10"></div>
+              <div class="kv">
+                <span class="f11 b sec">Staff Account: kollam</span>
+                <span class="btn chip" style="padding:6px 10px; font-size:10px; border-radius:6px"><span class="material-icons" style="font-size:11px;color:var(--cyan)">edit</span>Change Password</span>
+              </div>
+            </div>
+
+            <div class="sp14"></div>
+            <div class="row gap6" style="background:var(--surface); border:1px solid var(--cardborder); border-radius:12px; padding:4px">
+              <span style="flex:1; text-align:center; background:var(--red); color:#fff; border-radius:8px; padding:8px 0; font-size:9.5px; font-weight:700; display:flex; align-items:center; justify-content:center; gap:3px; white-space:nowrap; overflow:hidden"><span class="material-icons" style="font-size:13px">grid_view</span>Zone &amp; Rigs</span>
+                <span style="flex:1; text-align:center; color:var(--ts); padding:8px 0; font-size:9.5px; font-weight:700; display:flex; align-items:center; justify-content:center; gap:3px; white-space:nowrap; overflow:hidden"><span class="material-icons" style="font-size:13px">shopping_cart</span>Deals</span>
+                <span style="flex:1; text-align:center; color:var(--ts); padding:8px 0; font-size:9.5px; font-weight:700; display:flex; align-items:center; justify-content:center; gap:3px; white-space:nowrap; overflow:hidden"><span class="material-icons" style="font-size:13px">laptop</span>Laptops</span>
+                <span style="flex:1; text-align:center; color:var(--ts); padding:8px 0; font-size:9.5px; font-weight:700; display:flex; align-items:center; justify-content:center; gap:3px; white-space:nowrap; overflow:hidden"><span class="material-icons" style="font-size:13px">article</span>Tech News</span>
+                <span style="flex:1; text-align:center; color:var(--ts); padding:8px 0; font-size:9.5px; font-weight:700; display:flex; align-items:center; justify-content:center; gap:3px; white-space:nowrap; overflow:hidden"><span class="material-icons" style="font-size:13px">campaign</span>Broadcast</span>
+            </div>
+
+            <div class="sp14"></div>
+            <div class="card r16" style="padding:14px">
+              <div class="between">
+                <div class="col" style="flex:1; padding-right:8px">
+                  <span class="f13 b">Kollam Store Open / Closed Status</span>
+                  <span class="f11" style="color:var(--green)">Store is currently OPEN to customers</span>
+                </div>
+                <div class="circ" style="width:38px;height:38px;background:rgba(37,211,102,.15); border:1.2px solid rgba(37,211,102,.6); margin-right:8px"><span class="material-icons" style="font-size:20px;color:#25D366">chat</span></div>
+                <span class="sw"></span>
+              </div>
+              <div class="sp10"></div>
+              <div style="height:1px; background:var(--cardborder); opacity:.5"></div>
+              <div class="sp8"></div>
+              <span class="f10 b sec ls">NEXT DAY OPENING PRESETS (TAP TO SET)</span>
+              <div class="sp6"></div>
+              <div class="row gap6">
+                <span class="btn chip" style="flex:1">10:00 AM</span>
+                <span class="btn chip" style="flex:1">11:00 AM</span>
+                <span class="btn chip" style="flex:1">Custom</span>
+              </div>
+            </div>
+
+            <div class="sp14"></div>
+            <div class="card r16" style="padding:14px">
+              <div class="between">
+                <div class="col">
+                  <span class="f10 b mut ls">TODAY'S STORE COLLECTION</span>
+                  <span class="money">₹4,260</span>
+                </div>
+                <div class="col" style="align-items:flex-end; gap:4px">
+                  <span class="pill green" style="font-size:10px">14 Completed</span>
+                  <span class="pill amber" style="font-size:10px">2 Rigs Playing (₹180)</span>
+                </div>
+              </div>
+              <div class="sp10"></div>
+              <div class="r8 p10" style="background:var(--chipbg); border:1px solid var(--cardborder)">
+                <span class="f11 sec">30-min block billing • 10-min free grace buffer on 1-hr sessions (up to 70 mins)</span>
+              </div>
+              <div class="sp10"></div>
+              <div class="col gap6">
+                <div class="between r8 p10" style="background:var(--cardbg); border:1px solid var(--cardborder)">
+                  <div class="col"><span class="f12 b">PC 3 • Walk-in</span><span class="f10 mut">60m (2 blocks) • Ended at 4:05 PM</span></div>
+                  <span class="f14 blk" style="color:var(--green)">₹180</span>
+                </div>
+                <div class="between r8 p10" style="background:var(--cardbg); border:1px solid var(--cardborder)">
+                  <div class="col"><span class="f12 b">PC 1 • Arjun</span><span class="f10 mut">90m (3 blocks) • Ended at 3:20 PM</span></div>
+                  <span class="f14 blk" style="color:var(--green)">₹270</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="sp14"></div>
+            <div class="between">
+              <span class="f12 blk">KOLLAM STATIONS (7)</span>
+              <span class="f10 mut">Tap station to edit occupancy</span>
+            </div>
+            <div class="sp8"></div>
+            <div class="col gap10">
+              <div class="card r12 p12" style="border-color:var(--redborder)">
+                <div class="between">
+                  <span class="f13 b">PC 2 • Battle Rig 2</span>
+                  <span class="f14 blk" style="color:var(--green)">₹90</span>
+                </div>
+                <div class="sp6"></div>
+                <span class="f11 sec">Gamer: Nikhil • Game: Valorant • Free at FREE @ 5:42 PM (38m 12s left)</span>
+                <div class="sp6"></div>
+                <div class="row gap4">
+                  <span class="f11 b">💰 Live Bill: </span><span class="f13 blk" style="color:var(--green)">₹90</span>
+                </div>
+                <span class="f10 mut">22m elapsed • ₹90/hr</span>
+                <div class="sp8"></div>
+                <div class="row gap6">
+                  <span class="btn chip" style="flex:1">+30m</span>
+                  <span class="btn chip" style="flex:1">End Session</span>
+                </div>
+              </div>
+              <div class="card r12 p12" style="border-color:var(--greenborder)">
+                <div class="between">
+                  <span class="f13 b">PC 1 • Battle Rig 1</span>
+                  <span class="pill green" style="font-size:10px">AVAILABLE</span>
+                </div>
+                <div class="sp6"></div>
+                <span class="f11 sec">RTX 5060 • Rate: ₹90/hr</span>
+                <div class="sp8"></div>
+                <span class="btn redfill full" style="font-size:12px">Start Session</span>
+              </div>
+              <div class="card r12 p12">
+                <div class="between">
+                  <span class="f13 b">PC 4 • Battle Rig 4</span>
+                  <span class="badge maint" style="padding:3px 6px"><span class="material-icons" style="font-size:9.5px">build</span>MAINTENANCE</span>
+                </div>
+                <div class="sp6"></div>
+                <span class="f11 sec">RTX 3050 • 🛠️ Maintenance Mode (Billing Paused)</span>
+              </div>
+            </div>
+            <div class="sp24"></div>
+          </div>
+        </div>
+      </div></div>
+    </figure>
+
+    <!-- MASTER ADMIN -->
+    <figure class="fr">
+      <figcaption>
+        <span class="cap-n">Super Admin: revenue</span>
+        <span class="cap-d">Your own login. All three branches, with a two month archive.</span>
+        <span class="cap-f">Rate changes made here never reach the counter tablets. Only this device updates.</span>
+      </figcaption>
+      <div class="phone"><div class="app" data-app="light">
+        <div class="scr">
+          <div class="pad" style="padding:10px 16px 24px">
+
+            <div class="card r16" style="border:1.5px solid rgba(217,35,45,.4); padding:14px">
+              <div class="between">
+                <div class="row gap8">
+                  <div class="circ" style="width:36px;height:36px;background:var(--redsoft)"><span class="material-icons" style="font-size:20px;color:var(--red)">admin_panel_settings</span></div>
+                  <div class="col">
+                    <span class="f14 blk">SUPER ADMIN REVENUE</span>
+                    <span class="f10 b" style="color:var(--red)">Both Branches • 30m Split Auto</span>
+                  </div>
+                </div>
+                <span class="btn chip" style="padding:6px 8px"><span class="material-icons" style="font-size:13px;color:var(--ts)">lock</span>Lock</span>
+              </div>
+            </div>
+
+            <div class="sp14"></div>
+            <div class="card r16 p14">
+              <div class="between">
+                <span class="f12 blk">COLLECTION MONITOR (2 MONTH ARCHIVE)</span>
+                <span class="pill amber" style="font-size:10px">60 Days Saved</span>
+              </div>
+              <div class="sp10"></div>
+              <div class="row gap6">
+                <span class="chip on" style="padding:6px 10px; font-size:11px">Today</span>
+                <span class="chip" style="padding:6px 10px; font-size:11px">7 Days</span>
+                <span class="chip" style="padding:6px 10px; font-size:11px">30 Days</span>
+                <span class="chip" style="padding:6px 10px; font-size:11px">Custom</span>
+              </div>
+              <div class="sp10"></div>
+              <span class="f11 sec">Period: 23 Sep 2026 → 23 Sep 2026</span>
+              <span class="f10 mut">1 days with collection</span>
+              <div class="sp10"></div>
+              <div style="text-align:center; padding:8px 0">
+                <div class="f10 b mut ls">TOTAL COLLECTION</div>
+                <div style="font-size:34px; font-weight:900; color:var(--green); line-height:1.1">₹11,940</div>
+              </div>
+            </div>
+
+            <div class="sp14"></div>
+            <div class="col gap10">
+              <div class="between card r12 p12">
+                <span class="f11 b">📍 KOLLAM BRANCH COLLECTION</span>
+                <span class="f16 blk" style="color:var(--green)">₹4,260</span>
+              </div>
+              <div class="between card r12 p12">
+                <span class="f11 b">📍 COCHIN BRANCH COLLECTION</span>
+                <span class="f16 blk" style="color:var(--green)">₹5,200</span>
+              </div>
+              <div class="between card r12 p12">
+                <span class="f11 b">📍 KOTTAYAM BRANCH COLLECTION</span>
+                <span class="f16 blk" style="color:var(--green)">₹2,480</span>
+              </div>
+            </div>
+
+            <div class="sp14"></div>
+            <div class="card r16 p14">
+              <div class="between">
+                <div class="col">
+                  <span class="f12 blk">HOURLY RATES &amp; RUSH SURGE</span>
+                  <span class="f10 mut">Zero-delay instant calculation overrides</span>
+                </div>
+              </div>
+              <div class="sp10"></div>
+              <div class="col gap8">
+                <div class="between r8 p10" style="background:var(--cardbg); border:1px solid var(--cardborder)">
+                  <div class="col"><span class="f12 b">Kollam PC • Day (10AM-6PM)</span><span class="f10 mut">30m split fee = ₹45</span></div>
+                  <span class="f13 blk">₹90/hr</span>
+                </div>
+                <div class="between r8 p10" style="background:var(--cardbg); border:1px solid var(--cardborder)">
+                  <div class="col"><span class="f12 b">Kollam Racing Simulator</span><span class="f10 mut">30m split fee = ₹60 (Default: ₹120/hr)</span></div>
+                  <span class="f13 blk">₹120/hr</span>
+                </div>
+                <div class="between r8 p10" style="background:var(--cardbg); border:1px solid var(--cardborder)">
+                  <div class="col"><span class="f12 b">Kottayam PC Flat Rate</span><span class="f10 mut">30m split fee = ₹60 (Default: ₹120/hr Flat)</span></div>
+                  <span class="f13 blk">₹120/hr</span>
+                </div>
+                <div class="between r8 p10" style="background:var(--ambersoft); border:1px solid var(--amberborder)">
+                  <div class="col"><span class="f12 b" style="color:var(--amber)">⚡ Rush Surge</span><span class="f10" style="color:var(--amber)">Picks a random price between ₹110 and ₹140</span></div>
+                  <span class="sw off" style="background:var(--tm)"></span>
+                </div>
+              </div>
+            </div>
+
+            <div class="sp14"></div>
+            <div class="f12 blk">LIVE ACTIVE SESSIONS ACCUMULATING REVENUE (2)</div>
+            <div class="sp8"></div>
+            <div class="col gap8">
+              <div class="between card r12 p12">
+                <div class="col">
+                  <span class="f13 b">PC 2 • Nikhil</span>
+                  <span class="f11 mut">Played: 22m (1 × 30m blocks) • Game: Valorant</span>
+                </div>
+                <span class="f14 blk" style="color:var(--green)">₹90</span>
+              </div>
+              <div class="between card r12 p12">
+                <div class="col">
+                  <span class="f13 b">PC 5 • Gamer</span>
+                  <span class="f11 mut">Played: 55m (2 × 30m blocks) • Game: GTA V</span>
+                </div>
+                <span class="f14 blk" style="color:var(--green)">₹90</span>
+              </div>
+            </div>
+
+            <div class="sp14"></div>
+            <div class="card r16 p14">
+              <div class="row gap10">
+                <div class="circ" style="width:36px;height:36px;background:var(--redsoft)"><span class="material-icons" style="font-size:20px;color:var(--red)">lock</span></div>
+                <div class="col">
+                  <span class="f13 b">Staff &amp; Admin Access Credentials</span>
+                  <span class="f10 mut">Super Admin • Kollam • Kottayam</span>
+                </div>
+              </div>
+              <div class="sp10"></div>
+              <span class="f11 sec" style="line-height:16px">Reset passwords for Super Admin or Branch Staff. Changes save immediately to device and sync directly to cloud database so other staff can log in with new password on any device.</span>
+            </div>
+            <div class="sp24"></div>
+          </div>
+        </div>
+      </div></div>
+    </figure>
+
+  </div>
+</section>
+
+</main>
+
+<footer class="end">
+  <div class="wrap">
+    <p>Rebuilt from the XATTICA Gaming Zone v2.8.6 source: <code>ui/theme/Color.kt</code>, <code>ui/theme/Type.kt</code> and each screen composable. Colours, wording, type sizes and spacing match the shipped app. Photographs are shown as grey placeholders because the app loads them from the internet at runtime.</p>
+    <p>Live numbers (occupancy, timers, collection totals) are examples. Everything else is what is really in the app.</p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var root = document.documentElement;
+  var apps = document.querySelectorAll('.app');
+
+  function setApp(mode){
+    apps.forEach(function(a){ a.setAttribute('data-app', mode); });
+    document.querySelectorAll('[data-app-mode]').forEach(function(b){
+      b.setAttribute('aria-pressed', String(b.getAttribute('data-app-mode') === mode));
+    });
+    try{ localStorage.setItem('xattica-current-app', mode); }catch(e){}
+  }
+  function setPage(mode){
+    root.setAttribute('data-theme', mode);
+    document.querySelectorAll('[data-page-mode]').forEach(function(b){
+      b.setAttribute('aria-pressed', String(b.getAttribute('data-page-mode') === mode));
+    });
+    try{ localStorage.setItem('xattica-current-page', mode); }catch(e){}
+  }
+
+  document.querySelectorAll('[data-app-mode]').forEach(function(b){
+    b.addEventListener('click', function(){ setApp(b.getAttribute('data-app-mode')); });
+  });
+  document.querySelectorAll('[data-page-mode]').forEach(function(b){
+    b.addEventListener('click', function(){ setPage(b.getAttribute('data-page-mode')); });
+  });
+
+  try{
+    var a = localStorage.getItem('xattica-current-app');
+    if(a){ setApp(a); }
+    var p = localStorage.getItem('xattica-current-page');
+    if(p){ setPage(p); }
+  }catch(e){}
+})();
+</script>
+
+</body>
+</html>
